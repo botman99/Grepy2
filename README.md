@@ -19,7 +19,7 @@ Features:
 
 Here's an example screenshot:
 
-[![screenshot](https://github.com/botman99/Grepy2/Grepy2Help/raw/master/img/GrepyExample.png)]
+![Grepy2](https://raw.githubusercontent.com/botman99/Grepy2/master/Grepy2Help/GrepyExample.PNG)
 
 See the [Releases](https://github.com/botman99/Grepy2/releases) page to download the latest release.
 
