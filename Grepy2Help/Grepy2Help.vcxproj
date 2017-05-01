@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Grepy2Help.hhp" />
+    <None Include="Table of Contents.hhc" />
+    <None Include="WhatIsGrepy.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="GrepyExample.PNG" />
+    <Image Include="GrepyMenu.PNG" />
+    <Image Include="GrepyOptions.PNG" />
+    <Image Include="GrepySearch.PNG" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{78699A4F-A46F-4517-ABFD-5313530A1029}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>"C:\Program Files (x86)\HTML Help Workshop\hhc.exe" Grepy2Help.hhp
+exit 0</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"C:\Program Files (x86)\HTML Help Workshop\hhc.exe" Grepy2Help.hhp
+exit 0</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeCleanCommandLine>del Grepy2Help.chm</NMakeCleanCommandLine>
+    <OutDir>$(SolutionDir)Grepy2Help\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>"C:\Program Files (x86)\HTML Help Workshop\hhc.exe" Grepy2Help.hhp
+exit 0</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>"C:\Program Files (x86)\HTML Help Workshop\hhc.exe" Grepy2Help.hhp
+exit 0</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeCleanCommandLine>del Grepy2Help.chm</NMakeCleanCommandLine>
+    <OutDir>$(SolutionDir)Grepy2Help\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,21 @@
+[OPTIONS]
+Auto Index=Yes
+Compatibility=1.1 or later
+Compiled file=Grepy2Help.chm
+Contents file=Table of Contents.hhc
+Default topic=Grepy2.htm
+Display compile progress=No
+Full-text search=Yes
+Language=0x409 English (United States)
+
+
+[ALIAS]
+SearchHelp=Search.htm
+OptionsHelp=Options.htm
+
+[MAP]
+#define SearchHelp 1
+#define OptionsHelp 2
+
+[INFOTYPES]
+

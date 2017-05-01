@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<Title>View</Title>
+</HEAD>
+<BODY>
+<p style="text-align:right"><A href="View.htm">Previous</a>&nbsp;&nbsp;&nbsp;Next</p>
+<p style="text-align:center">Grepy2 CommandLine</p>
+Grepy2 supports the following command line arguments:<br>
+<br>
+<PRE>Grepy2.exe [switches] [SearchFolder] SearchString FileSpec [FileSpec...]</PRE>
+Where optional <b>[switches]</b> can be any of the following:<br>
+<br>
+-r = Recurse folders<br>
+-cs = Use Case Sensitive searching<br>
+-noregex = Don't use regular expressions when searching<br>
+<br>
+The optional <b>SearchFolder</b> can be specified if you want to search from a specific folder.  If no <b>SearchFolder</b> is specified, Grepy will start searching from the current directory.<br>
+<br>
+The <b>SearchString</b> is the string of text that you want to search for.  Regular Expressions are enabled by default so if you are using wildcard characters in your search string, make sure the search string is a valid regular expression.<br>
+<br>
+The <b>FileSpec</b> arguments are the file specification that you want to use when searching for the search string.  Normal MS-DOS file specifications can be used here.  Multiple file specifications can be provided on the command line.<br>
+<br>
+Examples:<br>
+<PRE>Grepy2 test *.*</PRE>
+(Searches for the string "test" in all files in the current directory.)<br>
+<PRE>Grepy2 -r -cs Main *.cpp</PRE>
+(Does a case sensitive search for the string "Main" in all .cpp files in the current directory and all subdirectories.)<br>
+<PRE>Grepy2 -r "C:\Projects" new *.h *.cpp</PRE>
+(Searches for the string "new" in all .h and .cpp files in the 'C:\Projects' directory and all subdirectories.)<br>
+<br>
+<b>NOTE:</b> "Grepy2 -?" will output usage information to the console.<br>
+<p style="text-align:right"><A href="View.htm">Previous</a>&nbsp;&nbsp;&nbsp;Next</p>
+</BODY>
+</HTML>

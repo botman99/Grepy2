@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<Title>Search</Title>
+</HEAD>
+<BODY>
+<p style="text-align:right"><A href="Menu.htm">Previous</a>&nbsp;&nbsp;&nbsp;<A href="Options.htm">Next</a></p>
+<center>Grepy Search Dialog</center><br>
+The Search dialog contains the following:<br>
+<br>
+<center><img src="GrepySearch.PNG" alt="Grepy Search"></center>
+<br>
+<b>Regular Expression</b> - Check this checkbox when you wish to search using a regular expression.<br>
+<br>
+<b>Match Case</b> - Check this checkbox when you wish to perform a case sensitive search.<br>
+<br>
+<b>Recursive Folder Search</b> - Check this checkbox if you wish to search folders recursively (searching all folders and subfolders within the starting folder).<br>
+<br>
+<b>Search For</b> - Here you enter the text string or regular expression that you are searching for.  When using a regular expression, don't forget to check the 'Regular Expression' checkbox. You can click the down arrow on the right to access the drop down list and select previously entered search strings (the most recently selected search string will be moved to the top of the list so that frequently used items remain in the drop down list).<br>
+<br>
+<b>File Specification(s)</b> - Enter the file specification of the files you want to search through here.  Standard MS-DOS wildcard characters can be used in the file specification. You can provide multiple file specifications by separating them with a space.  You can click the down arrow on the right to access the drop down list and select from previously used file specifications.<br>
+<br>
+<b>Folder To Search</b> - Enter the full path of the folder where you want to start the search.  You can click the down arrow on the right to access the drop down list and select from previously used folder locations, or you can click the "..." button to open a File Explorer dialog to browse to the folder that you wish to use.<br>
+<br>
+<b>NOTE:</b> The "Help" button will give you a quick help list of regular expression characters that are valid when searching using regular expressions.<br>
+<br>
+Here's a quick summary of valid Regular Expression characters that can be used in the 'Search For' field when seaching for a regular expression.<br>
+<br>
+<!--<P style="font-family:courier;font-size:8px;">-->
+<PRE>
+. - period, wildcard, matches any single character one time
+    (to match a period character use \.)
+* - asterisk, matches the previous element zero or more times
+    (.* matches any string of characters)
++ - plus sign, matches the previous element one or more times
+? - question mark, matches the previous element zero or one time
+^ - caret, matches the beginning of a line
+$ - dollar sign, matches the end of a line
+[abc] - matches any single character in the group
+    (i.e. a, b, or c, case sensitive)
+[^abc] - matches any single character that is not in the group
+    (i.e. not a, or b, or c, case sensitive)
+[a-e] - matches a range of characters
+    (i.e. a, b, c, d, or e, case sensitive)
+\t - matches tab character
+\s - matches any whitespace character (space or tab)
+\S - matches any non-whitespace character (not space or tab)
+\d - matches any decimal digit (i.e. 0 through 9)
+\D - matches any character other than a decimal digit
+{n} - matches the previous element exactly n times
+    (i.e. \d{3}, matches 3 digits in a row)
+(abc) - grouped expression (matches "abc", case sensitive)
+| - matches any one element of the group
+    (i.e. (ab|bbb|c) matches "ab", "bbb" or "c")
+\ - escape, used to match characters that are used as regular expressions
+    (i.e. "\\" matches backslash, "\*" matches asterisk)
+<BR>
+</PRE>
+<!--</P>-->
+For more details see:  <a href="http://msdn.microsoft.com/en-us/library/az24scfc.aspx">http://msdn.microsoft.com/en-us/library/az24scfc.aspx</a><br>
+<br>
+<p style="text-align:right"><A href="Menu.htm">Previous</a>&nbsp;&nbsp;&nbsp;<A href="Options.htm">Next</a></p>
+</BODY>
+</HTML>

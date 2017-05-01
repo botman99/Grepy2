@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="WhatIsGrepy.htm" />
+    <None Include="Grepy2Help.hhp" />
+    <None Include="Table of Contents.hhc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="GrepyExample.PNG" />
+    <Image Include="GrepyMenu.PNG" />
+    <Image Include="GrepyOptions.PNG" />
+    <Image Include="GrepySearch.PNG" />
+  </ItemGroup>
+</Project>

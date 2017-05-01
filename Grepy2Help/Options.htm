@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<Title>Options</Title>
+</HEAD>
+<BODY>
+<p style="text-align:right"><A href="Search.htm">Previous</a>&nbsp;&nbsp;&nbsp;<A href="View.htm">Next</a></p>
+<center>Grepy Options Dialog</center><br>
+The Options dialog contains the following:<br>
+<br>
+<center><img src="GrepyOptions.PNG" alt="Grepy Search"></center>
+<br>
+<b>Enable Windows File Explorer integration</b> - Use this checkbox to enable or disable Windows File Explorer integration (where you can mouse right click on a folder or drive and run Grepy using that folder as the 'Folder To Search' in the Search dialog).  You may need to run Grepy as an administrator to use this option (i.e. right click on the Grepy start menu item or desktop shortcut and select "Run as administrator").<br>
+<br>
+<b>Number of search worker threads</b> - Click the down arrow to open a drop down list to select the number of worker threads you want to use when searching the text files for a search match.  Increasing the number of worker threads can make searching faster but will tie up more CPU resources.  This number is limited to one less than the total number of CPU cores that you have on your machine.<br>
+<br>
+<b>Defer Rich Text display of search results until after search is complete</b> - Normally while searching text files, Grepy will immediately display the search results in the lower (or right hand) pane.  If a lot of text is being displayed, this can make Grepy become sluggish an unresponsive on some systems.  If you have this problem, you can defer displaying all the search results until after the search is complete and then display everything all at once.  Enabling this option can also make the search process slightly faster (although you don't see the results until the search is done).<br>
+<br>
+<b>Use Windows file association for editor</b> - If this checkbox is checked, Grepy will use whatever Windows file association you have set for a file type when opening the file for editing.  If you uncheck this checkbox, you can select a custom editor application to use when Grepy opens a file for editing.<br>
+<br>
+<b>Custom Editor</b> - This displays the currently set custom editor and any arguments used to open a file. You can use the "..." button to open a File Explorer dialog to choose the executable you want to use as a custom editor. You can manually edit the 'Custom Editor' field to add arguments that Grepy can use to fill in the filename ($F) and the line number to position to in the editor ($L). See your editor's documentation to find out how to specify these arguments.<br>
+<br>
+<p style="text-align:right"><A href="Search.htm">Previous</a>&nbsp;&nbsp;&nbsp;<A href="View.htm">Next</a></p>
+</BODY>
+</HTML>
