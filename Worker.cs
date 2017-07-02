@@ -26,6 +26,8 @@ namespace Grepy2
 		private int MyIndex;
 		private IntPtr MyIndexPtr;
 
+		int ReadLineSleepCount = 0;
+
 		StringBuilder currentline;  // for ReadLine method
 
 		int SearchFilesIndex;  // the index into the Globals.SearchFiles[] array that this worker is currently working on
@@ -102,6 +104,8 @@ namespace Grepy2
 					// notify main Form thread that we are done (or that we were cancelled)
 					PostMessage(FormHandle, Globals.WM_WORKER_NOTIFY_MAIN_THREAD, MyIndexPtr, IntPtr.Zero);
 				}
+
+				Thread.Sleep(0);  // force context switch
 			}
 		}
 
@@ -320,6 +324,13 @@ namespace Grepy2
 				line = ReadLine(sr);
 
 				LineNumber++;
+
+				ReadLineSleepCount++;
+				if( ReadLineSleepCount >= 1000 )
+				{
+					ReadLineSleepCount = 0;
+					Thread.Sleep(0);  // force context switch
+				}
 
 				int MatchesInLine = 0;
 

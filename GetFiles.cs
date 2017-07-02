@@ -34,6 +34,8 @@ namespace Grepy2
 		List<string> filenames;
 		List<string> folders;
 
+		int ProcessFileSleepCount = 0;
+
 		public GetFiles(IntPtr InHandle)
 		{
 			FormHandle = new HandleRef(this, InHandle);
@@ -90,6 +92,8 @@ namespace Grepy2
 					everything_search = everything_search + ">";
 
 					Everything_SetSearchW(everything_search);  // set the search parameter (quoted folder name followed by '<' 
+
+					Thread.Sleep(0);  // force context switch
 
 					if( Everything_QueryW(true) )  // wait for the results
 					{
@@ -164,6 +168,14 @@ namespace Grepy2
 					if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
 					{
 						return;
+					}
+
+					ProcessFileSleepCount++;
+
+					if( ProcessFileSleepCount >= 100 )
+					{
+						ProcessFileSleepCount = 0;
+						Thread.Sleep(0);  // force context switch
 					}
 
 					string[] fileList = Directory.GetFiles(InDirectory, Globals.FileSpecs[index]);

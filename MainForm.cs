@@ -1035,6 +1035,7 @@ namespace Grepy2
 			{
 				// create a new Worker class instance and create the Worker thread
 				WorkerThreads[index] = new Thread(new Worker(Handle, index).Run);
+				WorkerThreads[index].Priority = ThreadPriority.BelowNormal;
 				WorkerThreads[index].Start();  // start the thread running
 			}
 		}
@@ -1130,6 +1131,7 @@ namespace Grepy2
 
 			// create a new GetFiles class instance and create the GetFiles thread
 			GetFilesThread = new Thread(new GetFiles(Handle).Run);
+			GetFilesThread.Priority = ThreadPriority.BelowNormal;
 			GetFilesThread.Start();  // start the thread running
 
 
