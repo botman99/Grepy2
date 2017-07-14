@@ -55,7 +55,6 @@ namespace Grepy2
 				Globals.Workers[MyIndex].WaitHandle = new AutoResetEvent(false);  // create a WaitHandle for syncronization
 
 				Globals.Workers[MyIndex].bIsWorking = false;
-				Globals.Workers[MyIndex].bShouldStopCurrentJob = false;
 				Globals.Workers[MyIndex].bShouldExit = false;
 
 				Buffer_4k = new byte[BUFFER_SIZE_4K];
@@ -129,7 +128,7 @@ namespace Grepy2
 
 				for( int i = 3; i < count-1; i++ )  // skip the first 3 bytes since these are the Unicode BOM encoding
 				{
-					if( Globals.GetFiles.bShouldStopCurrentJob )
+					if( Globals.bShouldStopWorkerJobs )
 					{
 						return false;
 					}
@@ -157,7 +156,7 @@ namespace Grepy2
 
 			while( (i = sr.Read()) > 0 )
 			{
-				if( Globals.GetFiles.bShouldStopCurrentJob )
+				if( Globals.bShouldStopWorkerJobs )
 				{
 					sr.Close();
 					return "";
@@ -182,7 +181,7 @@ namespace Grepy2
 				{
 					while( (i = sr.Read()) > 0 )  // read until we get an end of line character
 					{
-						if( Globals.GetFiles.bShouldStopCurrentJob )
+						if( Globals.bShouldStopWorkerJobs )
 						{
 							sr.Close();
 							return "";
@@ -313,14 +312,8 @@ namespace Grepy2
 
 			string line = "";
 
-			while (sr.Peek() >= 0)
+			while (!Globals.bShouldStopWorkerJobs && (sr.Peek() >= 0))
 			{
-				if( Globals.GetFiles.bShouldStopCurrentJob )
-				{
-					sr.Close();
-					return false;
-				}
-
 				line = ReadLine(sr);
 
 				LineNumber++;
@@ -362,7 +355,7 @@ namespace Grepy2
 
 						while( pos >= 0 )
 						{
-							if( Globals.GetFiles.bShouldStopCurrentJob )
+							if( Globals.bShouldStopWorkerJobs )
 							{
 								sr.Close();
 								return false;
@@ -436,6 +429,11 @@ namespace Grepy2
 			}
 
 			sr.Close();
+
+			if (Globals.bShouldStopWorkerJobs)
+			{
+				return false;
+			}
 
 			Globals.SearchFiles[SearchFilesIndex].SearchMatchCount = NumberOfMatchesInFile;
 

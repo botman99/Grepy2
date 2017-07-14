@@ -38,7 +38,6 @@ namespace Grepy2
 		{
 			public AutoResetEvent WaitHandle;
 			public bool bIsWorking;  // is thread currently working on a job (set by thread, read by others)
-			public bool bShouldStopCurrentJob;  // thread should stop working on current job (cancel work, set by Main Form, read by worker thread)
 			public bool bShouldExit;  // thread should exit (quit)
 
 			public int SearchFilesIndex;  // index into the SearchFiles list that is assigned to this worker
@@ -95,6 +94,8 @@ namespace Grepy2
 
 		public static string ApplicationPathExe;
 		public static int NumWorkerThreads;
+
+		public static bool bShouldStopWorkerJobs = false;  // cancel all worker jobs in progress
 
 		public static bool bPleaseWaitDialogCancelled;
 

@@ -237,12 +237,13 @@ namespace Grepy2
 
 							int NumWorkersToStart = Math.Min(Globals.SearchFiles.Length, Globals.Workers.Length);
 
+							Globals.bShouldStopWorkerJobs = false;
+
 							for( int i = 0; i < NumWorkersToStart; i++ )
 							{
 								Globals.Workers[i].SearchFilesIndex = NextSearchFileJobIndex;
 								NextSearchFileJobIndex++;
 
-								Globals.Workers[i].bShouldStopCurrentJob = false;
 								Globals.Workers[i].WaitHandle.Set();  // tell the Worker thread that to search the SearchFiles index item
 							}
 						}
@@ -371,7 +372,7 @@ namespace Grepy2
 						}
 						else
 						{
-							if( Globals.Workers[WorkerNotifyIndex].bShouldStopCurrentJob )  // if we have cancelled the search...
+							if( Globals.bShouldStopWorkerJobs )  // if we have cancelled the search...
 							{
 								bool bAllWorkerThreadsStopped = true;  // assume true until known otherwise
 
@@ -390,6 +391,8 @@ namespace Grepy2
 									SearchingProgressBar.Value = 0;
 
 									SearchIsDoneOrCancelled(true);
+
+									Globals.bShouldStopWorkerJobs = false;
 
 									if( bDeferRichTextDisplay )
 									{
@@ -1504,10 +1507,7 @@ namespace Grepy2
 				stopSearchToolStripMenuItem.Visible = false;
 				stopSearchToolStripMenuItem.Enabled = false;
 
-				for( int i = 0; i < Globals.Workers.Length; i++ )
-				{
-					Globals.Workers[i].bShouldStopCurrentJob = true;
-				}
+				Globals.bShouldStopWorkerJobs = true;
 			}
 		}
 
