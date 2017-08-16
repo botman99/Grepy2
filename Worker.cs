@@ -394,7 +394,7 @@ namespace Grepy2
 					if( LinesSinceMatch >= 0 )
 					{
 						LinesSinceMatch++;
-						if( LinesSinceMatch == 5 )
+						if( (LinesSinceMatch == 5) || (sr.Peek() == -1) )  // if we're read 5 lines or reached the end of the file...
 						{
 							int PreviewIndex = PreviewLineIndex - (PreviewLineCount - 1);  // index in the circular buffer of the oldest preview line
 							if( PreviewIndex < 0 )
