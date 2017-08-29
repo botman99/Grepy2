@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Runtime.InteropServices;
@@ -520,6 +516,16 @@ namespace Grepy2
 
 				string SearchStatusText = string.Format("Search for <{0}> in <{1}>: {2} {3} in {4} {5}", Globals.SearchString, SearchForFileSpec, TotalNumberOfSearchMatches, (TotalNumberOfSearchMatches == 1) ? "match" : "matches", TotalNumberOfSearchedFiles, (TotalNumberOfSearchedFiles == 1) ? "file" : "files");
 				searchStatusLabel.Text = SearchStatusText;
+
+				if( TotalNumberOfSearchMatches == 0 )
+				{
+					NoMatchesFound noMatchesFoundDialog = new NoMatchesFound();
+
+					noMatchesFoundDialog.StartPosition = FormStartPosition.CenterParent;
+//					noMatchesFoundDialog.ControlBox = false;  // don't show the 'X' to close button
+
+					noMatchesFoundDialog.ShowDialog();
+				}
 			}
 		}
 
@@ -1534,8 +1540,11 @@ namespace Grepy2
 			{
 				Config.Set(Config.KEY.PreviewBeforeSlider, PreviewBeforeTrackBar.Value);
 
-				SliderUpdateTimer.Interval = 1000;  // expire in 1 second
-				SliderUpdateTimer.Enabled = true;
+				if( TotalNumberOfSearchMatches > 0 )
+				{
+					SliderUpdateTimer.Interval = 1000;  // expire in 1 second
+					SliderUpdateTimer.Enabled = true;
+				}
 			}
 		}
 
@@ -1545,8 +1554,11 @@ namespace Grepy2
 			{
 				Config.Set(Config.KEY.PreviewAfterSlider, PreviewAfterTrackBar.Value);
 
-				SliderUpdateTimer.Interval = 1000;  // expire in 1 second
-				SliderUpdateTimer.Enabled = true;
+				if( TotalNumberOfSearchMatches > 0 )
+				{
+					SliderUpdateTimer.Interval = 1000;  // expire in 1 second
+					SliderUpdateTimer.Enabled = true;
+				}
 			}
 		}
 
