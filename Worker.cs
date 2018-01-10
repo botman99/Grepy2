@@ -162,15 +162,19 @@ namespace Grepy2
 					return "";
 				}
 
-				if( (i == 10) || (i == 13) )  // if character is a linefeed or a carriage return
+				if( i == 13 )  // if character is a carriage return
 				{
 					int next_char = sr.Peek();
 
-					if( (next_char == 10) || (next_char == 13) )
+					if( next_char == 10 )  // if CR followed by LF
 					{
 						sr.Read();  // throw away the newline
 					}
 
+					break;
+				}
+				else if( i == 10 )
+				{
 					break;
 				}
 
@@ -187,15 +191,19 @@ namespace Grepy2
 							return "";
 						}
 
-						if( (i == 10) || (i == 13) )  // if character is a linefeed or a carriage return
+						if( i == 13 )  // if character is a carriage return
 						{
 							int next_char = sr.Peek();
 
-							if( (next_char == 10) || (next_char == 13) )
+							if( next_char == 10 )  // if CR followed by LF
 							{
 								sr.Read();  // throw away the newline
 							}
 
+							break;
+						}
+						else if( i == 10 )
+						{
 							break;
 						}
 					}
