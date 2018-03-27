@@ -62,7 +62,8 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "NoMatchesFound";
-			this.Text = "No Matches Found";
+			this.Text = "Grepy2";
+			this.TopMost = true;
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
