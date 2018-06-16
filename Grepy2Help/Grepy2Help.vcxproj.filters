@@ -4,11 +4,19 @@
     <None Include="WhatIsGrepy.htm" />
     <None Include="Grepy2Help.hhp" />
     <None Include="Table of Contents.hhc" />
+    <None Include="CommandLine.htm" />
+    <None Include="Grepy2.htm" />
+    <None Include="GrepyDetails.htm" />
+    <None Include="Menu.htm" />
+    <None Include="Options.htm" />
+    <None Include="Search.htm" />
+    <None Include="View.htm" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="GrepyExample.PNG" />
     <Image Include="GrepyMenu.PNG" />
     <Image Include="GrepyOptions.PNG" />
     <Image Include="GrepySearch.PNG" />
+    <Image Include="GrepyDetails.PNG" />
   </ItemGroup>
 </Project>

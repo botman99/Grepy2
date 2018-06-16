@@ -524,7 +524,7 @@ namespace Grepy2
 					noMatchesFoundDialog.StartPosition = FormStartPosition.CenterParent;
 //					noMatchesFoundDialog.ControlBox = false;  // don't show the 'X' to close button
 
-					noMatchesFoundDialog.ShowDialog();
+					noMatchesFoundDialog.ShowDialog(this);
 				}
 			}
 		}
@@ -1351,7 +1351,7 @@ namespace Grepy2
 		{
 			SearchForm searchDialog = new SearchForm();
 
-			searchDialog.ShowDialog();
+			searchDialog.ShowDialog(this);
 
 			if( searchDialog.DialogResult == DialogResult.OK )
 			{
@@ -1398,7 +1398,7 @@ namespace Grepy2
 		{
 			OptionsForm optionsDialog = new OptionsForm();
 
-			optionsDialog.ShowDialog();
+			optionsDialog.ShowDialog(this);
 
 			if( optionsDialog.DialogResult == DialogResult.OK )
 			{

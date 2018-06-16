@@ -94,7 +94,7 @@
 			this.ShowIcon = false;
 			this.Text = "Search Help";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SearchHelpForm_Closing);
-			this.Load += new System.EventHandler(this.SearchHelpForm_Load);
+			this.Shown += new System.EventHandler(this.SearchHelpForm_Shown);
 			this.Move += new System.EventHandler(this.SearchHelpForm_Move);
 			this.panel1.ResumeLayout(false);
 			this.ResumeLayout(false);

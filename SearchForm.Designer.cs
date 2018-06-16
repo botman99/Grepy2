@@ -196,6 +196,7 @@
 			this.Text = "Search";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SearchForm_Closing);
 			this.Load += new System.EventHandler(this.SearchForm_Load);
+			this.Shown += new System.EventHandler(this.SearchForm_Shown);
 			this.Move += new System.EventHandler(this.SearchForm_Move);
 			this.ResumeLayout(false);
 			this.PerformLayout();

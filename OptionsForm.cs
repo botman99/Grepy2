@@ -56,17 +56,6 @@ namespace Grepy2
 				WorkerThreadsComboBox.Items.Add(string.Format("{0}", index));
 			}
 
-			int pos_x = -1;
-			int pos_y = -1;
-			if( Config.Get(Config.KEY.OptionsPosX, ref pos_x) && Config.Get(Config.KEY.OptionsPosY, ref pos_y) )
-			{
-				Location = new Point(pos_x, pos_y);
-			}
-			else  // otherwise, center the window on the main form
-			{
-				this.CenterToParent();
-			}
-
 			bool bDeferRichTextDisplay = false;
 			Config.Get(Config.KEY.OptionsDeferRichTextDisplay, ref bDeferRichTextDisplay);
 			DeferRichTextCheckBox.Checked = bDeferRichTextDisplay;
@@ -98,6 +87,20 @@ namespace Grepy2
 			OptionsToolTip.SetToolTip(this.DeferRichTextCheckBox, "Enable to defer the displaying of search match text in the RichText box until after the search is complete (this can improve performance).");
 
 			OptionsToolTip.SetToolTip(this.WindowsFileAssociationCheckBox, "Whether you wish to use the Windows application associated with a file type to edit the file or whether you wish to specify an editor to use to edit all files.");
+		}
+
+		private void OptionsForm_Shown(object sender, EventArgs e)
+		{
+			int pos_x = -1;
+			int pos_y = -1;
+			if( Config.Get(Config.KEY.OptionsPosX, ref pos_x) && Config.Get(Config.KEY.OptionsPosY, ref pos_y) )
+			{
+				Location = new Point(pos_x, pos_y);
+			}
+			else  // otherwise, center the window on the main form
+			{
+				this.CenterToParent();
+			}
 
 			bWindowInitComplete = true;  // window initialization is complete, okay to write config settings now
 		}

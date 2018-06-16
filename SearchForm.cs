@@ -63,17 +63,6 @@ namespace Grepy2
 
 		private void SearchForm_Load(object sender, EventArgs e)
 		{
-			int pos_x = -1;
-			int pos_y = -1;
-			if( Config.Get(Config.KEY.SearchPosX, ref pos_x) && Config.Get(Config.KEY.SearchPosY, ref pos_y) )
-			{
-				Location = new Point(pos_x, pos_y);
-			}
-			else  // otherwise, center the window on the main form
-			{
-				this.CenterToParent();
-			}
-
 			bool bConfigRegularExpression = false;
 			if( Config.Get(Config.KEY.SearchRegularExpression, ref bConfigRegularExpression) )
 			{
@@ -156,6 +145,20 @@ namespace Grepy2
 			SearchToolTip.SetToolTip(this.SearchForComboBox, "Type in the text you wish to search for here.");
 			SearchToolTip.SetToolTip(this.FileSpecComboBox, "Type in the file specifications you wish to use when collecting the files to search.");
 			SearchToolTip.SetToolTip(this.FolderComboBox, "Type in the folder name you wish to start searching from (or click the \"...\" button to browse to a folder).");
+		}
+
+		private void SearchForm_Shown(object sender, EventArgs e)
+		{
+			int pos_x = -1;
+			int pos_y = -1;
+			if( Config.Get(Config.KEY.SearchPosX, ref pos_x) && Config.Get(Config.KEY.SearchPosY, ref pos_y) )
+			{
+				Location = new Point(pos_x, pos_y);
+			}
+			else  // otherwise, center the window on the main form
+			{
+				this.CenterToParent();
+			}
 
 			bWindowInitComplete = true;  // window initialization is complete, okay to write config settings now
 		}
@@ -320,7 +323,7 @@ namespace Grepy2
 
 		private void SearchHelpButton_Click(object sender, EventArgs e)
 		{
-			helpForm.Show();
+			helpForm.Show(this);
 		}
 
 		private void SearchCancelButton_Click(object sender, EventArgs e)

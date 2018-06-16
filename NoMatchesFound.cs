@@ -21,5 +21,10 @@ namespace Grepy2
 		{
 			Close();
 		}
+
+		private void NoMatchesFound_Shown(object sender, EventArgs e)
+		{
+			CenterToParent();
+		}
 	}
 }

@@ -11,13 +11,35 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include="CommandLine.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Grepy2.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Grepy2Help.hhp" />
+    <None Include="GrepyDetails.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Menu.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Options.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Search.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Table of Contents.hhc" />
+    <None Include="View.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="WhatIsGrepy.htm">
       <DeploymentContent>true</DeploymentContent>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="GrepyDetails.PNG" />
     <Image Include="GrepyExample.PNG" />
     <Image Include="GrepyMenu.PNG" />
     <Image Include="GrepyOptions.PNG" />

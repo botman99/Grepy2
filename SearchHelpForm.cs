@@ -15,7 +15,7 @@ namespace Grepy2
 			InitializeComponent();
 		}
 
-		private void SearchHelpForm_Load(object sender, EventArgs e)
+		private void SearchHelpForm_Shown(object sender, EventArgs e)
 		{
 			int pos_x = -1;
 			int pos_y = -1;

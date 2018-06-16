@@ -216,6 +216,7 @@
 			this.ShowIcon = false;
 			this.Text = "Options";
 			this.Load += new System.EventHandler(this.OptionsForm_Load);
+			this.Shown += new System.EventHandler(this.OptionsForm_Shown);
 			this.Move += new System.EventHandler(this.OptionsForm_Move);
 			this.ResumeLayout(false);
 			this.PerformLayout();
