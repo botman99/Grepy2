@@ -402,33 +402,41 @@ namespace Grepy2
 					if( LinesSinceMatch >= 0 )
 					{
 						LinesSinceMatch++;
-						if( (LinesSinceMatch == 5) || (sr.Peek() == -1) )  // if we're read 5 lines or reached the end of the file...
+
+						try
 						{
-							int PreviewIndex = PreviewLineIndex - (PreviewLineCount - 1);  // index in the circular buffer of the oldest preview line
-							if( PreviewIndex < 0 )
+							if( (LinesSinceMatch == 5) || (sr.Peek() == -1) )  // if we're read 5 lines or reached the end of the file...
 							{
-								PreviewIndex += 5;
-							}
-
-							for( int index = 0; index < PreviewLineCount; index++ )
-							{
-								Globals.SearchLine PreviewSearchLine = new Globals.SearchLine();
-
-								PreviewSearchLine.LineNumber = LineNumber - (PreviewLineCount - index) + 1;
-								PreviewSearchLine.Line = PreviewLines[PreviewIndex++];
-								if( PreviewIndex == 5 )
+								int PreviewIndex = PreviewLineIndex - (PreviewLineCount - 1);  // index in the circular buffer of the oldest preview line
+								if( PreviewIndex < 0 )
 								{
-									PreviewIndex = 0;
+									PreviewIndex += 5;
 								}
-								PreviewSearchLine.bIsSearchTextMatch = false;
 
-								Globals.SearchFiles[SearchFilesIndex].Lines.Add(PreviewSearchLine);
+								for( int index = 0; index < PreviewLineCount; index++ )
+								{
+									Globals.SearchLine PreviewSearchLine = new Globals.SearchLine();
+
+									PreviewSearchLine.LineNumber = LineNumber - (PreviewLineCount - index) + 1;
+									PreviewSearchLine.Line = PreviewLines[PreviewIndex++];
+									if( PreviewIndex == 5 )
+									{
+										PreviewIndex = 0;
+									}
+									PreviewSearchLine.bIsSearchTextMatch = false;
+
+									Globals.SearchFiles[SearchFilesIndex].Lines.Add(PreviewSearchLine);
+								}
+
+								PreviewLineIndex = -1;  // reset the circular buffer
+								PreviewLineCount = 0;
+
+								LinesSinceMatch = -1;
 							}
-
-							PreviewLineIndex = -1;  // reset the circular buffer
-							PreviewLineCount = 0;
-
-							LinesSinceMatch = -1;
+						}
+						catch( Exception e )
+						{
+							Console.WriteLine("ScanFileForMatches() Exception: {0}", e.Message);
 						}
 					}
 				}
@@ -436,7 +444,14 @@ namespace Grepy2
 				NumberOfMatchesInFile += MatchesInLine;
 			}
 
-			sr.Close();
+			try
+			{
+				sr.Close();
+			}
+			catch( Exception e )
+			{
+				Console.WriteLine("ScanFileForMatches() Exception: {0}", e.Message);
+			}
 
 			if (Globals.bShouldStopWorkerJobs)
 			{

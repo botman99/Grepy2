@@ -427,7 +427,24 @@ namespace Grepy2
 				case Globals.WM_SLIDERUPDATE_NOTIFY_MAIN_THREAD:
 				{
 					// if there are more than 1,000 lines in the rich text box, then updating it will take some time, display a "Please Wait" dialog
-					if( RichTextBox.Lines.Length > 1000 )
+					if( TotalNumberOfSearchMatches > 1000 )
+					{
+						string msg = string.Format("{0} matches were found.\nThis could take a long time to display.\nAre you sure you wish to display all of the results?", TotalNumberOfSearchMatches);
+
+						if( TotalNumberOfSearchMatches > 5000 )
+						{
+							msg = string.Format("{0} matches were found.\nThis could take a REALLY long time (minutes) to display.\nAre you sure you wish to display all of the results?", TotalNumberOfSearchMatches);
+						}
+
+						DialogResult result = MessageBox.Show(msg, "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+						if( result == DialogResult.No )
+						{
+							break;
+						}
+					}
+
+					if( TotalNumberOfSearchFileLines > 1000 )
 					{
 						PleaseWaitDeferredIndex = ListViewFileClickedOnIndex;
 						PleaseWaitForceDisplay = false;
@@ -687,7 +704,7 @@ namespace Grepy2
 
 				if( TotalNumberOfSearchMatches > 5000 )
 				{
-					msg = string.Format("{0} matches were found.\nThis could take a REALLY, REALLY long time (minutes) to display.\nAre you sure you wish to display all of the results?", TotalNumberOfSearchMatches);
+					msg = string.Format("{0} matches were found.\nThis could take a REALLY long time (minutes) to display.\nAre you sure you wish to display all of the results?", TotalNumberOfSearchMatches);
 				}
 
 				DialogResult result = MessageBox.Show(msg, "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
@@ -774,7 +791,10 @@ namespace Grepy2
 					}
 				}
 
-				MatchSyncLineOffset = TopLineIndex - RichTextMatchSyncList[MatchSyncLineIndex];
+				if (MatchSyncLineIndex >= 0)
+				{
+					MatchSyncLineOffset = TopLineIndex - RichTextMatchSyncList[MatchSyncLineIndex];
+				}
 
 				bSyncronizeUsingMatchLine = true;
 			}
@@ -1088,8 +1108,6 @@ namespace Grepy2
 
 			ColumnWidthSize = new int[6];
 
-			int[] TabPositions = new int[32];  // RichTextBox only supports 32 tab positions
-
 			// create a right-click menu in the FileListView to perform various functions ("copy files to clipboard", etc.)
 			MenuItem[] flv_mi = new MenuItem[] { new MenuItem("Copy Filenames To Clipboard"), new MenuItem("Export to CSV File") };
 
@@ -1106,12 +1124,14 @@ namespace Grepy2
 			Size sz = TextRenderer.MeasureText(graphics, "W", RichTextBox.Font, font_sz, TextFormatFlags.NoPadding);
 			graphics.Dispose();
 
+			int[] TabPositions = new int[32];  // RichTextBox only supports 32 tab positions
+
 			// set the RichText tab positions (assumes tab size of 4 characters)
 			int tab_size = 4 * sz.Width;
 
 			for(int x = 0; x < 32; x++)
 			{
-				TabPositions[x] = (x+1) * tab_size;
+				TabPositions[x] = (sz.Width * 10) + ((x+1) * tab_size);  // we prepend "{0,8}: " (10 characters) for the line number at the beginning of lines, offset by this many characters for first tab stop
 			}
 
 			RichTextBox.SelectionTabs = TabPositions;
