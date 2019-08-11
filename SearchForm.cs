@@ -266,7 +266,7 @@ namespace Grepy2
 				return;
 			}
 
-			if( !Directory.Exists(FolderName) )
+			if( !FolderName.StartsWith("\\\\") && !Directory.Exists(FolderName) )
 			{
 				MessageBox.Show("'Folder To Search' directory does not exist.\n", "Invalid Directory");
 				return;
