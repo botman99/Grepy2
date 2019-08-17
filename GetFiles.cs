@@ -73,7 +73,8 @@ namespace Grepy2
 
 						string search_drive = Globals.SearchDirectory.Substring(0, 2);
 
-						everything_search = string.Format("\"{0}\\*\"", search_drive);
+						// see if the drive is indexed by Everything by checking for the existance of any folder or file in the root (if zero results are returned, the drive isn't indexed, or is empty)
+						everything_search = string.Format("\"{0}\\*\" parents:1", search_drive);
 
 						Everything_SetSearchW(everything_search);  // set the search parameter (quoted folder name followed by '<' 
 
@@ -187,73 +188,80 @@ namespace Grepy2
 			}
 		}
 
-		private void InternalGetFiles(string InDirectory)
+		private List<string> GetFilesForDirectory(string path, string filespec)
 		{
+			List<string> list = new List<string>();
+
 			try
 			{
-				for( int index = 0; index < Globals.FileSpecs.Count; index++ )
+				list.AddRange(Directory.GetFiles(path, filespec, SearchOption.TopDirectoryOnly));
+
+				if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
 				{
-					if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
+					return null;
+				}
+
+				if( Globals.bRecursive )
+				{
+					string[] dirlist = Directory.GetDirectories(path);
+
+					if( dirlist != null )
 					{
-						return;
-					}
-
-					ProcessFileSleepCount++;
-
-					if( ProcessFileSleepCount >= 100 )
-					{
-						ProcessFileSleepCount = 0;
-						Thread.Sleep(0);  // force context switch
-					}
-
-					string[] fileList = Directory.GetFiles(InDirectory, Globals.FileSpecs[index]);
-
-					if( fileList != null )
-					{
-						for( int i=0; i < fileList.Length; i++ )
+						for( int i=0; i < dirlist.Length; i++ )
 						{
 							if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
 							{
-								return;
+								return null;
 							}
 
-							filenames.Add(fileList[i]);
+							list.AddRange(GetFilesForDirectory(dirlist[i], filespec));
 						}
 					}
 				}
 			}
-			catch( Exception e )
+			catch( Exception e)
 			{
-				Console.WriteLine("InternalGetFiles() - Directory.GetFiles Exception: {0}", e.Message);
-				return;
+				Console.WriteLine("GetFilesForDirectory() - Exception: {0}", e.Message);
 			}
 
-			if( Globals.bRecursive )
+			if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
 			{
-				try
-				{
-					// recursively search any directories within the current folder
-					string[] dirList = Directory.GetDirectories(InDirectory);
+				return null;
+			}
 
-					for( int i=0; i < dirList.Length; i++ )
+			return list;
+		}
+
+		private void InternalGetFiles(string InDirectory)
+		{
+			for( int index = 0; index < Globals.FileSpecs.Count; index++ )
+			{
+				if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
+				{
+					return;
+				}
+
+				ProcessFileSleepCount++;
+
+				if( ProcessFileSleepCount >= 100 )
+				{
+					ProcessFileSleepCount = 0;
+					Thread.Sleep(0);  // force context switch
+				}
+
+				List<string> fileList = GetFilesForDirectory(InDirectory, Globals.FileSpecs[index]);
+
+				if( fileList != null )
+				{
+					for( int i=0; i < fileList.Count; i++ )
 					{
-						if( Globals.GetFiles.bShouldStopCurrentJob )
+						if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
 						{
 							return;
 						}
 
-						string BaseFilename = Path.GetFileName( dirList[i] );
-						if( (BaseFilename == "$RECYCLE.BIN") || (BaseFilename == "System Volume Information") )  // skip the recycle bin and volume information on any drive
-						{
-							continue;
-						}
-
-						InternalGetFiles( dirList[i] );
+						filenames.Add(fileList[i]);
 					}
-				}
-				catch (Exception e)
-				{
-					Console.WriteLine("InternalGetFiles() - Directory.GetDirectories Exception: {0}", e.Message);
 				}
 			}
 		}

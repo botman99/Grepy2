@@ -130,6 +130,7 @@ namespace Grepy2
 		private Point RichTextBoxMousePosition;  // saves the position of the most recent mouse click location in the RichTextBox
 
 		private ListViewItem FileListViewSelectedItem;
+		private Color FileListViewBackColor;
 
 		private bool bDeferRichTextDisplay;
 		private bool bUseWindowsFileAssociation;
@@ -254,9 +255,7 @@ namespace Grepy2
 								SearchForFileSpec = SearchForFileSpec + " " + Globals.FileSpecs[index];
 							}
 
-							searchStatusLabel.Text = string.Format("No files found matching file specification: {0}", SearchForFileSpec);
-
-							SearchIsDoneOrCancelled(false);
+							SearchIsDoneOrCancelled(true);
 						}
 					}
 					else  // collecting the files to be searched was cancelled
@@ -531,8 +530,14 @@ namespace Grepy2
 					}
 				}
 
-				string SearchStatusText = string.Format("Search for <{0}> in <{1}>: {2} {3} in {4} {5}", Globals.SearchString, SearchForFileSpec, TotalNumberOfSearchMatches, (TotalNumberOfSearchMatches == 1) ? "match" : "matches", TotalNumberOfSearchedFiles, (TotalNumberOfSearchedFiles == 1) ? "file" : "files");
-				searchStatusLabel.Text = SearchStatusText;
+				if( Globals.SearchFiles.Length == 0 )
+				{
+					searchStatusLabel.Text = string.Format("No files found matching file specification: {0}", SearchForFileSpec);
+				}
+				else
+				{
+					searchStatusLabel.Text = string.Format("Search for <{0}> in <{1}>: {2} {3} in {4} {5}", Globals.SearchString, SearchForFileSpec, TotalNumberOfSearchMatches, (TotalNumberOfSearchMatches == 1) ? "match" : "matches", TotalNumberOfSearchedFiles, (TotalNumberOfSearchedFiles == 1) ? "file" : "files");
+				}
 
 				if( TotalNumberOfSearchMatches == 0 )
 				{
@@ -1661,7 +1666,14 @@ namespace Grepy2
 			}
 			else if( e.Button == MouseButtons.Left )
 			{
+				if( FileListViewSelectedItem != null)
+				{
+					FileListViewSelectedItem.BackColor = FileListViewBackColor;
+				}
+
 				FileListViewSelectedItem = ClickedItem;
+				FileListViewBackColor = ClickedItem.BackColor;  // save the background color so we can restore it later
+				ClickedItem.BackColor = Color.WhiteSmoke;
 
 				ClickedItem.Selected = true;
 

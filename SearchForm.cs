@@ -272,9 +272,9 @@ namespace Grepy2
 				return;
 			}
 
-			if( FolderName.EndsWith("\\") )  // if folder name ends with a backslash, remove it
+			if( FolderName.EndsWith(":") )
 			{
-				FolderComboBox.Text = FolderName.TrimEnd('\\');
+				FolderComboBox.Text = FolderName + "\\";
 			}
 
 			if( RegExCheckBox.Checked )  // if using Regular Expression search, make sure the search text is a valid regular expression
