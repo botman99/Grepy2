@@ -19,6 +19,7 @@ namespace Grepy2
 		public const int WM_WORKER_NOTIFY_MAIN_THREAD = WM_USER+1;  // notify main thread that worker has searched file for search text
 		public const int WM_SLIDERUPDATE_NOTIFY_MAIN_THREAD = WM_USER+2;  // notify main thread that the Before/After preview slider has updated
 		public const int WM_PLEASEWAITSHOWN_NOTIFY_MAIN_THREAD = WM_USER+3;  // notify main thread that the "Please Wait" dialog has been shown
+		public const int WM_CTRL_CLICK_NOTIFY_MAIN_THREAD = WM_USER+4;  // notify main thread that RichTextBox Ctrl Single Click happened
 
 		public struct GetFiles_s  // struct for GetFiles thread
 		{

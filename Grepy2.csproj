@@ -72,6 +72,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BetterRichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BetterRichTextBox.Designer.cs">
+      <DependentUpon>BetterRichTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="CollectingFiles.cs">
       <SubType>Form</SubType>
     </Compile>

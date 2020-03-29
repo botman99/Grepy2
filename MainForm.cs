@@ -127,7 +127,7 @@ namespace Grepy2
 
 		private List<FilenameIndex_s> FilenameLineNumbers;  // so we can determine the filename based on the RichText line number
 
-		private Point RichTextBoxMousePosition;  // saves the position of the most recent mouse click location in the RichTextBox
+		private int[] TabPositions;
 
 		private ListViewItem FileListViewSelectedItem;
 		private Color FileListViewBackColor;
@@ -475,6 +475,14 @@ namespace Grepy2
 					}
 				}
 				break;
+
+				case Globals.WM_CTRL_CLICK_NOTIFY_MAIN_THREAD:
+				{
+					OpenFileFromRichTextBoxPoint(RichTextBox.RichTextMousePosition);
+
+					FileListView.Focus();  // set focus on the FileListView to keep any selected items selected (since clicking in the RichTextBox will change the focus)
+				}
+				break;
 			}
 
 			base.WndProc(ref m);
@@ -578,7 +586,10 @@ namespace Grepy2
 				text_buffer += "\n";  // break between search match gaps
 			}
 
-			text_buffer += string.Format("{0,8}: ", Globals.SearchFiles[FileIndex].Lines[LineIndex].LineNumber);
+			if (displayLineNumbersToolStripMenuItem.Checked)
+			{
+				text_buffer += string.Format("{0,8}: ", Globals.SearchFiles[FileIndex].Lines[LineIndex].LineNumber);
+			}
 
 			if( Globals.SearchFiles[FileIndex].Lines[LineIndex].bIsSearchTextMatch )
 			{
@@ -816,6 +827,11 @@ namespace Grepy2
 			eventMask = SendMessage(RichTextBox.Handle, EM_GETEVENTMASK, IntPtr.Zero, IntPtr.Zero);
 
 			RichTextBox.Clear();
+
+			if ((TabPositions != null) && (TabPositions.Length > 0))
+			{
+				RichTextBox.SelectionTabs = TabPositions;
+			}
 
 			RichTextMatchSyncList = new List<int>();
 			FilenameLineNumbers = new List<FilenameIndex_s>();
@@ -1077,10 +1093,7 @@ namespace Grepy2
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			Globals.MainFormHandle = Handle;
-
-			// fix bug with AutoWordSelection (it is true by default but setting it to 'false' won't turn it off, you have to enable it then disable it to turn it off)
-			RichTextBox.AutoWordSelection = true;
-			RichTextBox.AutoWordSelection = false;
+			RichTextBox.FormHandle = new HandleRef(this, Globals.MainFormHandle);
 
 			// set FileListView to double buffered to reduce flicker
 			// (don't do this for Remote Desktop connections because it will slow them down.  https://blogs.msdn.microsoft.com/oldnewthing/20060103-12/?p=32793)
@@ -1122,24 +1135,6 @@ namespace Grepy2
 			}
 
 			FileListView.ContextMenu = new ContextMenu(flv_mi);
-
-			// get width of character in RichTextBox
-			Graphics graphics = Graphics.FromHwnd(IntPtr.Zero);
-			Size font_sz = new Size(1,1);  // this doesn't seem to matter
-			Size sz = TextRenderer.MeasureText(graphics, "W", RichTextBox.Font, font_sz, TextFormatFlags.NoPadding);
-			graphics.Dispose();
-
-			int[] TabPositions = new int[32];  // RichTextBox only supports 32 tab positions
-
-			// set the RichText tab positions (assumes tab size of 4 characters)
-			int tab_size = 4 * sz.Width;
-
-			for(int x = 0; x < 32; x++)
-			{
-				TabPositions[x] = (sz.Width * 10) + ((x+1) * tab_size);  // we prepend "{0,8}: " (10 characters) for the line number at the beginning of lines, offset by this many characters for first tab stop
-			}
-
-			RichTextBox.SelectionTabs = TabPositions;
 
 			// create a right-click menu in the RichTextBox to perform various functions ("copy to clipboard", etc.)
 			MenuItem[] rtb_mi = new MenuItem[] { new MenuItem("Select Current Line"), new MenuItem("Select All"), new MenuItem("Copy Selection To Clipboard"), new MenuItem("Open in Editor") };
@@ -1216,6 +1211,14 @@ namespace Grepy2
 					splitContainer1.SplitterDistance = splitter_distance;
 				}
 			}
+
+			bool bDisplayLineNumbers = true;
+			if( Config.Get(Config.KEY.DisplayLineNumbers, ref bDisplayLineNumbers) )
+			{
+				displayLineNumbersToolStripMenuItem.Checked = bDisplayLineNumbers;
+			}
+
+			SetRichTextTabPositions();
 
 			List<int> ListViewColumnWidth = new List<int>();
 			if( Config.Get(Config.KEY.ListViewColumnWidth, ref ListViewColumnWidth) )
@@ -1294,6 +1297,32 @@ namespace Grepy2
 			}
 		}
 
+		private void SetRichTextTabPositions()
+		{
+			// get width of character in RichTextBox
+			Graphics graphics = Graphics.FromHwnd(IntPtr.Zero);
+			Size font_sz = new Size(1,1);  // this doesn't seem to matter
+			Size sz = TextRenderer.MeasureText(graphics, "W", RichTextBox.Font, font_sz, TextFormatFlags.NoPadding);
+			graphics.Dispose();
+
+			TabPositions = new int[32];  // RichTextBox only supports 32 tab positions
+
+			// set the RichText tab positions (assumes tab size of 4 characters)
+			int tab_size = 4 * sz.Width;
+
+			for(int x = 0; x < 32; x++)
+			{
+				if (displayLineNumbersToolStripMenuItem.Checked)
+				{
+					TabPositions[x] = (sz.Width * 10) + ((x+1) * tab_size);  // we prepend "{0,8}: " (10 characters) for the line number at the beginning of lines, offset by this many characters for first tab stop
+				}
+				else
+				{
+					TabPositions[x] = (x+1) * tab_size;
+				}
+			}
+		}
+
 		private void StartCollectingFilesForSearch()
 		{
 			GC.Collect();  // collect garbage before each search
@@ -1323,6 +1352,11 @@ namespace Grepy2
 			ListViewFileClickedOnIndex = -1;  // we haven't clicked on a file from the ListView yet
 
 			RichTextBox.Clear();
+
+			if ((TabPositions != null) && (TabPositions.Length > 0))
+			{
+				RichTextBox.SelectionTabs = TabPositions;
+			}
 
 			Globals.GetFiles.bShouldStopCurrentJob = false;
 			Globals.GetFiles.WaitHandle.Set();  // tell the GetFiles thread to collect the files to search
@@ -1523,6 +1557,17 @@ namespace Grepy2
 					ReDisplayRichTextSearchMatches(-1);  // re-display all files
 				}
 			}
+		}
+
+		private void displayLineNumbersToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			displayLineNumbersToolStripMenuItem.Checked = !displayLineNumbersToolStripMenuItem.Checked;
+
+			Config.Set(Config.KEY.DisplayLineNumbers, displayLineNumbersToolStripMenuItem.Checked);
+
+			SetRichTextTabPositions();
+
+			ReDisplayRichTextSearchMatches(ListViewFileClickedOnIndex);
 		}
 
 		private void helpToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1773,18 +1818,6 @@ namespace Grepy2
 			}
 		}
 
-		private void RichTextBox_MouseDown(object sender, MouseEventArgs e)
-		{
-			RichTextBoxMousePosition = new Point(e.X, e.Y);  // save the latest mouse click position
-
-			if( (ModifierKeys & Keys.Control) == Keys.Control )
-			{
-				OpenFileFromRichTextBoxPoint(RichTextBoxMousePosition);
-
-				FileListView.Focus();  // set focus on the FileListView to keep any selected items selected (since clicking in the RichTextBox will change the focus)
-			}
-		}
-
 		private void OnRichTextBox_MenuItemClick(object sender, EventArgs e)
 		{
 			int index = ((MenuItem)sender).Index;
@@ -1797,7 +1830,7 @@ namespace Grepy2
 
 				if( index == 0 )  // select the line at the cursor
 				{
-					int CharacterIndex = RichTextBox.GetCharIndexFromPosition(RichTextBoxMousePosition);
+					int CharacterIndex = RichTextBox.GetCharIndexFromPosition(RichTextBox.RichTextMousePosition);
 					int LineIndex = RichTextBox.GetLineFromCharIndex(CharacterIndex);
 					if( LineIndex < RichTextBox.Lines.Length )
 					{
@@ -1828,7 +1861,7 @@ namespace Grepy2
 			}
 			else if( index == 3 )  // open in editor
 			{
-				OpenFileFromRichTextBoxPoint(RichTextBoxMousePosition);
+				OpenFileFromRichTextBoxPoint(RichTextBox.RichTextMousePosition);
 			}
 		}
 	}

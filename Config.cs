@@ -48,6 +48,8 @@ namespace Grepy2
 
 			SearchHelpPosX,
 			SearchHelpPosY,
+
+			DisplayLineNumbers,  // bool
 		};
 
 		private static string ConfigFilename;

@@ -38,6 +38,7 @@
 			this.horizontalSplitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.verticalSplitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.allSearchMatchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.displayLineNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.stopSearchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel1 = new System.Windows.Forms.Panel();
@@ -59,7 +60,7 @@
 			this.MatchesHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.FileSizeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.DateTimeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.RichTextBox = new System.Windows.Forms.RichTextBox();
+			this.RichTextBox = new Grepy2.BetterRichTextBox();
 			this.menuStrip1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
@@ -99,7 +100,7 @@
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
 			this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -124,7 +125,8 @@
 			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.horizontalSplitToolStripMenuItem,
             this.verticalSplitToolStripMenuItem,
-            this.allSearchMatchesToolStripMenuItem});
+            this.allSearchMatchesToolStripMenuItem,
+            this.displayLineNumbersToolStripMenuItem});
 			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
 			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.viewToolStripMenuItem.Text = "View";
@@ -133,7 +135,7 @@
 			// 
 			this.horizontalSplitToolStripMenuItem.Name = "horizontalSplitToolStripMenuItem";
 			this.horizontalSplitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.H)));
-			this.horizontalSplitToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+			this.horizontalSplitToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
 			this.horizontalSplitToolStripMenuItem.Text = "Horizontal Split";
 			this.horizontalSplitToolStripMenuItem.Click += new System.EventHandler(this.horizontalSplitToolStripMenuItem_Click);
 			// 
@@ -141,7 +143,7 @@
 			// 
 			this.verticalSplitToolStripMenuItem.Name = "verticalSplitToolStripMenuItem";
 			this.verticalSplitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.V)));
-			this.verticalSplitToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+			this.verticalSplitToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
 			this.verticalSplitToolStripMenuItem.Text = "Vertical Split";
 			this.verticalSplitToolStripMenuItem.Click += new System.EventHandler(this.verticalSplitToolStripMenuItem_Click);
 			// 
@@ -149,9 +151,19 @@
 			// 
 			this.allSearchMatchesToolStripMenuItem.Name = "allSearchMatchesToolStripMenuItem";
 			this.allSearchMatchesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.A)));
-			this.allSearchMatchesToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+			this.allSearchMatchesToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
 			this.allSearchMatchesToolStripMenuItem.Text = "All Search Matches";
 			this.allSearchMatchesToolStripMenuItem.Click += new System.EventHandler(this.allSearchMatchesToolStripMenuItem_Click);
+			// 
+			// displayLineNumbersToolStripMenuItem
+			// 
+			this.displayLineNumbersToolStripMenuItem.Checked = true;
+			this.displayLineNumbersToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.displayLineNumbersToolStripMenuItem.Name = "displayLineNumbersToolStripMenuItem";
+			this.displayLineNumbersToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.N)));
+			this.displayLineNumbersToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
+			this.displayLineNumbersToolStripMenuItem.Text = "Display Line Numbers";
+			this.displayLineNumbersToolStripMenuItem.Click += new System.EventHandler(this.displayLineNumbersToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -381,7 +393,6 @@
 			this.RichTextBox.TabIndex = 1;
 			this.RichTextBox.Text = "";
 			this.RichTextBox.WordWrap = false;
-			this.RichTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBox_MouseDown);
 			// 
 			// MainForm
 			// 
@@ -436,7 +447,6 @@
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.ListView FileListView;
-		private System.Windows.Forms.RichTextBox RichTextBox;
 		private System.Windows.Forms.Label searchStatusLabel;
 		private System.Windows.Forms.ColumnHeader FilenameHeader;
 		private System.Windows.Forms.ColumnHeader FileTypeHeader;
@@ -452,6 +462,8 @@
 		private System.Windows.Forms.Label SearchCountLabel;
 		private System.Windows.Forms.Label SearchingLabel;
 		private System.Windows.Forms.ProgressBar SearchingProgressBar;
+		private BetterRichTextBox RichTextBox;
+		private System.Windows.Forms.ToolStripMenuItem displayLineNumbersToolStripMenuItem;
 	}
 }
 

@@ -34,8 +34,6 @@ namespace Grepy2
 		List<string> filenames;
 		List<string> folders;
 
-		int ProcessFileSleepCount = 0;
-
 		public GetFiles(IntPtr InHandle)
 		{
 			FormHandle = new HandleRef(this, InHandle);
@@ -236,33 +234,14 @@ namespace Grepy2
 		{
 			for( int index = 0; index < Globals.FileSpecs.Count; index++ )
 			{
+				filenames = GetFilesForDirectory(InDirectory, Globals.FileSpecs[index]);
+
 				if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
 				{
 					return;
 				}
 
-				ProcessFileSleepCount++;
-
-				if( ProcessFileSleepCount >= 100 )
-				{
-					ProcessFileSleepCount = 0;
-					Thread.Sleep(0);  // force context switch
-				}
-
-				List<string> fileList = GetFilesForDirectory(InDirectory, Globals.FileSpecs[index]);
-
-				if( fileList != null )
-				{
-					for( int i=0; i < fileList.Count; i++ )
-					{
-						if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
-						{
-							return;
-						}
-
-						filenames.Add(fileList[i]);
-					}
-				}
+				Thread.Sleep(0);  // force context switch
 			}
 		}
 	}
