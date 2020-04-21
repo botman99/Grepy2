@@ -333,6 +333,7 @@
             this.FileSizeHeader,
             this.DateTimeHeader});
 			this.FileListView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.FileListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FileListView.FullRowSelect = true;
 			this.FileListView.GridLines = true;
 			this.FileListView.Location = new System.Drawing.Point(0, 0);

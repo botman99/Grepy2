@@ -4,6 +4,7 @@ using System.Linq;
 
 using System.Timers;
 using System.IO;
+using System.Drawing;
 
 namespace Grepy2
 {
@@ -34,9 +35,6 @@ namespace Grepy2
 			OptionsUseWindowsFileAssociation,  // bool
 			OptionsCustomEditor,  // string
 
-			FontPickerPosX,
-			FontPickerPosY,
-
 			SearchPosX,
 			SearchPosY,
 			SearchRegularExpression,  // bool
@@ -50,6 +48,11 @@ namespace Grepy2
 			SearchHelpPosY,
 
 			DisplayLineNumbers,  // bool
+
+			FontPickerPosX,
+			FontPickerPosY,
+			FileListFont,
+			SearchResultsFont
 		};
 
 		private static string ConfigFilename;
@@ -179,6 +182,17 @@ namespace Grepy2
 			}
 		}
 
+		public static bool Get(KEY key, ref string value)
+		{
+			string key_string = key.ToString();
+			if( ConfigDictionary.ContainsKey(key_string) )
+			{
+				value = ConfigDictionary[key_string];
+				return true;
+			}
+			return false;
+		}
+
 		public static void Set(KEY key, string value)
 		{
 			string key_string = key.ToString();
@@ -194,14 +208,60 @@ namespace Grepy2
 			timer.Interval = 1000;
 		}
 
+
+		public static bool Get(KEY key, ref int value)
+		{
+			string key_string = key.ToString();
+			if( ConfigDictionary.ContainsKey(key_string) )
+			{
+				value = 0;
+				Int32.TryParse(ConfigDictionary[key_string], out value);
+				return true;
+			}
+			return false;
+		}
+
 		public static void Set(KEY key, int value)
 		{
 			Set(key, value.ToString());
 		}
 
+
+		public static bool Get(KEY key, ref bool value)
+		{
+			string key_string = key.ToString();
+			if( ConfigDictionary.ContainsKey(key_string) )
+			{
+				value = ConfigDictionary[key_string] == "True";
+				return true;
+			}
+			return false;
+		}
+
 		public static void Set(KEY key, bool value)
 		{
 			Set(key, value.ToString());  // set to 'False' or 'True'
+		}
+
+
+		public static bool Get(KEY key, ref List<string> value)
+		{
+			value = new List<string>();
+
+			int count = 1;
+			bool found = false;
+			do
+			{
+				string key_string = string.Format("{0}{1}", key.ToString(), count);
+				found = ConfigDictionary.ContainsKey(key_string);
+				if( found )
+				{
+					value.Add(ConfigDictionary[key_string]);
+				}
+				count++;
+			}  while( found );
+
+			return (value.Count() > 0);
 		}
 
 		public static void Set(KEY key, List<string> StringList)
@@ -231,71 +291,6 @@ namespace Grepy2
 			timer.Interval = 1000;
 		}
 
-		public static void Set(KEY key, List<int> IntList)
-		{
-			List<string> StringList = new List<string>();
-
-			for( int index = 0; index < IntList.Count; index++ )
-			{
-				StringList.Add(IntList[index].ToString());
-			}
-
-			Set(key, StringList);
-		}
-
-		public static bool Get(KEY key, ref string value)
-		{
-			string key_string = key.ToString();
-			if( ConfigDictionary.ContainsKey(key_string) )
-			{
-				value = ConfigDictionary[key_string];
-				return true;
-			}
-			return false;
-		}
-
-		public static bool Get(KEY key, ref int value)
-		{
-			string key_string = key.ToString();
-			if( ConfigDictionary.ContainsKey(key_string) )
-			{
-				value = 0;
-				Int32.TryParse(ConfigDictionary[key_string], out value);
-				return true;
-			}
-			return false;
-		}
-
-		public static bool Get(KEY key, ref bool value)
-		{
-			string key_string = key.ToString();
-			if( ConfigDictionary.ContainsKey(key_string) )
-			{
-				value = ConfigDictionary[key_string] == "True";
-				return true;
-			}
-			return false;
-		}
-
-		public static bool Get(KEY key, ref List<string> value)
-		{
-			value = new List<string>();
-
-			int count = 1;
-			bool found = false;
-			do
-			{
-				string key_string = string.Format("{0}{1}", key.ToString(), count);
-				found = ConfigDictionary.ContainsKey(key_string);
-				if( found )
-				{
-					value.Add(ConfigDictionary[key_string]);
-				}
-				count++;
-			}  while( found );
-
-			return (value.Count() > 0);
-		}
 
 		public static bool Get(KEY key, ref List<int> value)
 		{
@@ -311,6 +306,75 @@ namespace Grepy2
 			}
 
 			return (value.Count() > 0);
+		}
+
+		public static void Set(KEY key, List<int> IntList)
+		{
+			List<string> StringList = new List<string>();
+
+			for( int index = 0; index < IntList.Count; index++ )
+			{
+				StringList.Add(IntList[index].ToString());
+			}
+
+			Set(key, StringList);
+		}
+
+
+		public static bool Get(KEY key, ref Font value)
+		{
+			string FontString = "";
+			if (Get(key, ref FontString))
+			{
+				string[] fields = FontString.Split(',');
+
+				if (fields.Length == 4)
+				{
+					if ((fields[0].Substring(0,1) == "\"") && (fields[0].Substring(fields[0].Length - 1,1) == "\""))
+					{
+						fields[0] = fields[0].Substring(1, fields[0].Length - 2);  // chop off the leading and trailing double quote
+					}
+
+					FontFamily font_family = new FontFamily(fields[0]);
+
+					float size = float.Parse(fields[1]);
+					int int_style = int.Parse(fields[2]);
+
+					FontStyle style = FontStyle.Regular;
+					if ((int_style & 1) != 0)
+					{
+						style = style | FontStyle.Bold;
+					}
+					if ((int_style & 2) != 0)
+					{
+						style = style | FontStyle.Italic;
+					}
+
+					GraphicsUnit graphics_unit = (GraphicsUnit) Enum.Parse(typeof(GraphicsUnit), fields[3]);
+
+					value = new Font(font_family, size, style, graphics_unit);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public static void Set(KEY key, Font value)
+		{
+			int Style = 0;  // Regular
+			if( value.Style.HasFlag(FontStyle.Bold) )
+			{
+				Style |= 1;
+			}
+			if( value.Style.HasFlag(FontStyle.Italic) )
+			{
+				Style |= 2;
+			}
+
+			int GraphicsUnit = (int)value.Unit;
+
+			Set(key, String.Format("\"{0}\",{1},{2},{3}", value.FontFamily.Name, value.SizeInPoints, Style, GraphicsUnit));
 		}
 	}
 }

@@ -33,9 +33,17 @@ namespace Grepy2
 		private ExplorerIntegration WindowsExplorerIntegration;
 		private bool bWindowsExplorerIntegrationAtStart;  // save the state of the Windows Explorer Integration check box at startup (so we can tell if it changed)
 
-		public OptionsForm()
+		public Font ListViewFont;
+		public bool bListViewFontChanged = false;
+		public Font RichTextBoxFont;
+		public bool bRichTextBoxFontChanged = false;
+
+		public OptionsForm(Font InListViewFont, Font InRichTextBoxFont)
 		{
 			bWindowInitComplete = false;  // we aren't done initializing the window yet, don't overwrite any .config settings
+
+			ListViewFont = InListViewFont;
+			RichTextBoxFont = InRichTextBoxFont;
 
 			this.DialogResult = DialogResult.Cancel;  // set the default dialog result to 'Cancel'
 
@@ -75,9 +83,12 @@ namespace Grepy2
 
 			WorkerThreadsComboBox.SelectedIndex = Globals.NumWorkerThreads - 1;
 
+			FileListFontTextBox.Text = string.Format(@"{0} {1} pt {2}", ListViewFont.Name, ListViewFont.Size, ListViewFont.Style.ToString());
+			SearchResultsFontTextBox.Text = string.Format(@"{0} {1} pt {2}", RichTextBoxFont.Name, RichTextBoxFont.Size, RichTextBoxFont.Style.ToString());
+
 			ToolTip OptionsToolTip = new ToolTip();
 
-			OptionsToolTip.AutomaticDelay = 1000;
+			OptionsToolTip.AutomaticDelay = 500;
 
 			OptionsToolTip.SetToolTip(this.WindowsExplorerCheckBox, "Enable or disable having Grepy2 appear in the right-click menu in Windows File Explorer when right-clicking on a folder (or drive).");
 
@@ -187,6 +198,16 @@ namespace Grepy2
 				}
 			}
 
+			if (bListViewFontChanged)
+			{
+				Config.Set(Config.KEY.FileListFont, ListViewFont);
+			}
+
+			if (bRichTextBoxFontChanged)
+			{
+				Config.Set(Config.KEY.SearchResultsFont, RichTextBoxFont);
+			}
+
 			SaveConfig();
 
 			this.DialogResult = DialogResult.OK;
@@ -228,6 +249,45 @@ namespace Grepy2
 			{
 				CustomEditorTextBox.Text = "\"" + openFileDialog.FileName + "\"";
 			}
+		}
+
+		private void FileListFontButton_Click(object sender, EventArgs e)
+		{
+			FontPicker fontDialog = new FontPicker(ListViewFont);
+
+			try
+			{
+				if( fontDialog.ShowDialog() != DialogResult.Cancel && (fontDialog.SelectedFont != null) )
+				{
+					ListViewFont = fontDialog.SelectedFont;
+					bListViewFontChanged = true;
+					FileListFontTextBox.Text = string.Format(@"{0} {1} pt {2}", ListViewFont.Name, ListViewFont.Size, ListViewFont.Style.ToString());
+				}
+			}
+			catch (Exception)
+			{
+				MessageBox.Show("Sorry, this is not a TrueType font and can't be used.  Please select another font.");			
+			}
+		}
+
+		private void SearchResultsFontButton_Click(object sender, EventArgs e)
+		{
+			FontPicker fontDialog = new FontPicker(RichTextBoxFont);
+
+			try
+			{
+				if( fontDialog.ShowDialog() != DialogResult.Cancel && (fontDialog.SelectedFont != null) )
+				{
+					RichTextBoxFont = fontDialog.SelectedFont;
+					bRichTextBoxFontChanged = true;
+					SearchResultsFontTextBox.Text = string.Format(@"{0} {1} pt {2}", RichTextBoxFont.Name, RichTextBoxFont.Size, RichTextBoxFont.Style.ToString());
+				}
+			}
+			catch (Exception)
+			{
+				MessageBox.Show("Sorry, this is not a TrueType font and can't be used.  Please select another font.");			
+			}
+
 		}
 	}
 }

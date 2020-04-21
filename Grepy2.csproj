@@ -87,6 +87,12 @@
     <Compile Include="Config.cs" />
     <Compile Include="ExplorerIntegration.cs" />
     <Compile Include="FolderSelectDialog.cs" />
+    <Compile Include="FontPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FontPicker.Designer.cs">
+      <DependentUpon>FontPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="GetFiles.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="ListViewColumnSorter.cs" />
@@ -131,6 +137,9 @@
     <Compile Include="Worker.cs" />
     <EmbeddedResource Include="CollectingFiles.resx">
       <DependentUpon>CollectingFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FontPicker.resx">
+      <DependentUpon>FontPicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

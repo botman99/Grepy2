@@ -661,7 +661,7 @@ namespace Grepy2
 				FilenameLineNumbers.Add(FilenameIndex);
 			}
 
-			// display the filename (in bold text)
+			// display the filename (in bold or non-bold text depending on the RichTextBox font)
 			bool SelectionFontIsBold = RichTextBox.SelectionFont.Bold;
 			RichTextBox.SelectionFont = new Font(RichTextBox.SelectionFont, SelectionFontIsBold ? FontStyle.Regular : FontStyle.Bold);
 			RichTextBox.SelectedText = string.Format("{0}\\{1}\n", Globals.SearchFiles[FileIndex].FolderName, Globals.SearchFiles[FileIndex].BaseFilename);
@@ -1264,6 +1264,19 @@ namespace Grepy2
 				}
 			}
 
+			Font ListViewFont = null;
+			if (Config.Get(Config.KEY.FileListFont, ref ListViewFont))
+			{
+				FileListView.Font = ListViewFont;
+			}
+
+			Font SearchResultsFont = null;
+			if (Config.Get(Config.KEY.SearchResultsFont, ref SearchResultsFont))
+			{
+				RichTextBox.Font = SearchResultsFont;
+				RichTextBox.SelectionFont = SearchResultsFont;
+			}
+
 			if ( fileToolStripMenuItem.Selected )  // if the 'File' menu item is selected by default (because it's the first in the Tab Order)
 			{
 				FileListView.Focus();  // set focus to the FileListView instead
@@ -1455,7 +1468,7 @@ namespace Grepy2
 
 		private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			OptionsForm optionsDialog = new OptionsForm();
+			OptionsForm optionsDialog = new OptionsForm(FileListView.Font, RichTextBox.Font);
 
 			optionsDialog.ShowDialog(this);
 
@@ -1481,6 +1494,20 @@ namespace Grepy2
 					CreateWorkerThreads();
 
 					Config.Set(Config.KEY.NumWorkerThreads, Globals.NumWorkerThreads);
+				}
+
+				if( optionsDialog.bListViewFontChanged)
+				{
+					FileListView.Font = optionsDialog.ListViewFont;
+					FileListView.Invalidate();
+				}
+
+				if( optionsDialog.bRichTextBoxFontChanged)
+				{
+					RichTextBox.Font = optionsDialog.RichTextBoxFont;
+					RichTextBox.SelectionFont = optionsDialog.RichTextBoxFont;
+
+					ReDisplayRichTextSearchMatches(ListViewFileClickedOnIndex);
 				}
 			}
 		}
