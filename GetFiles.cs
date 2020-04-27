@@ -16,16 +16,16 @@ namespace Grepy2
 
 		[DllImport("Everything32.dll")]
 		public static extern void Everything_Reset();
-        [DllImport("Everything32.dll", CharSet = CharSet.Unicode)]
+		[DllImport("Everything32.dll", CharSet = CharSet.Unicode)]
 		public static extern int Everything_SetSearchW(string lpSearchString);
 		[DllImport("Everything32.dll")]
 		public static extern void Everything_SortResultsByPath();
 		[DllImport("Everything32.dll")]
 		public static extern bool Everything_QueryW(bool bWait);
 		[DllImport("Everything32.dll")]
-		public static extern int Everything_GetNumFileResults();
-        [DllImport("Everything32.dll", CharSet = CharSet.Unicode)]
-        public static extern void Everything_GetResultFullPathNameW(int nIndex, StringBuilder lpString, int nMaxCount);
+		public static extern int Everything_GetNumResults();
+		[DllImport("Everything32.dll", CharSet = CharSet.Unicode)]
+		public static extern void Everything_GetResultFullPathNameW(int nIndex, StringBuilder lpString, int nMaxCount);
 		[DllImport("Everything32.dll")]
 		public static extern bool Everything_IsDBLoaded();
 
@@ -82,7 +82,7 @@ namespace Grepy2
 
 						if( Everything_QueryW(true) )  // wait for the results
 						{
-							if( Everything_GetNumFileResults() > 0)
+							if( Everything_GetNumResults() > 0)
 							{
 								bDriveIsIndexed = true;
 							}
@@ -126,7 +126,7 @@ namespace Grepy2
 
 								Everything_SortResultsByPath();  // sort the results by path
 
-								int SearchFilesCount = Everything_GetNumFileResults();
+								int SearchFilesCount = Everything_GetNumResults();
 
 								if( SearchFilesCount > 0 )
 								{
@@ -234,7 +234,7 @@ namespace Grepy2
 		{
 			for( int index = 0; index < Globals.FileSpecs.Count; index++ )
 			{
-				filenames = GetFilesForDirectory(InDirectory, Globals.FileSpecs[index]);
+				filenames.AddRange(GetFilesForDirectory(InDirectory, Globals.FileSpecs[index]));
 
 				if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
 				{

@@ -8,7 +8,7 @@
 ; The name of the installer
 Name "Grepy2"
 
-!define VERSION '2.1.1'
+!define VERSION '2.1.2'
 
 ; The file to write
 OutFile "Grepy2-${VERSION}.exe"
