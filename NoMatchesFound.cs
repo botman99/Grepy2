@@ -15,16 +15,13 @@ namespace Grepy2
 		public NoMatchesFound()
 		{
 			InitializeComponent();
+
+			this.StartPosition = FormStartPosition.CenterParent;
 		}
 
 		private void OkButton_Click(object sender, EventArgs e)
 		{
 			Close();
-		}
-
-		private void NoMatchesFound_Shown(object sender, EventArgs e)
-		{
-			CenterToParent();
 		}
 	}
 }

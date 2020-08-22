@@ -13,21 +13,22 @@ namespace Grepy2
 			bWindowInitComplete = false;  // we aren't done initializing the window yet, don't overwrite any .config settings
 
 			InitializeComponent();
-		}
 
-		private void SearchHelpForm_Shown(object sender, EventArgs e)
-		{
 			int pos_x = -1;
 			int pos_y = -1;
 			if( Config.Get(Config.KEY.SearchHelpPosX, ref pos_x) && Config.Get(Config.KEY.SearchHelpPosY, ref pos_y) )
 			{
-				Location = new Point(pos_x, pos_y);
+				this.StartPosition = FormStartPosition.Manual;
+				this.Location = new Point(pos_x, pos_y);
 			}
-			else  // otherwise, center the window on the main form
+			else  // otherwise, center the window on the parent form
 			{
-				this.CenterToParent();
+				this.StartPosition = FormStartPosition.CenterParent;
 			}
+		}
 
+		private void SearchHelpForm_Shown(object sender, EventArgs e)
+		{
 			bWindowInitComplete = true;  // window initialization is complete, okay to write config settings now
 		}
 

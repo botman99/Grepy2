@@ -58,7 +58,7 @@
 			this.WindowsExplorerCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.WindowsExplorerCheckBox.Name = "WindowsExplorerCheckBox";
 			this.WindowsExplorerCheckBox.Size = new System.Drawing.Size(287, 21);
-			this.WindowsExplorerCheckBox.TabIndex = 1;
+			this.WindowsExplorerCheckBox.TabIndex = 0;
 			this.WindowsExplorerCheckBox.Text = "Enable Windows File Explorer integration";
 			this.WindowsExplorerCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -71,7 +71,7 @@
 			this.WindowsFileAssociationCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.WindowsFileAssociationCheckBox.Name = "WindowsFileAssociationCheckBox";
 			this.WindowsFileAssociationCheckBox.Size = new System.Drawing.Size(273, 21);
-			this.WindowsFileAssociationCheckBox.TabIndex = 3;
+			this.WindowsFileAssociationCheckBox.TabIndex = 5;
 			this.WindowsFileAssociationCheckBox.Text = "Use Windows file association for editor";
 			this.WindowsFileAssociationCheckBox.UseVisualStyleBackColor = true;
 			this.WindowsFileAssociationCheckBox.CheckedChanged += new System.EventHandler(this.WindowsFileAssociationCheckBox_CheckedChanged);
@@ -91,16 +91,16 @@
 			this.CustomEditorTextBox.Location = new System.Drawing.Point(52, 325);
 			this.CustomEditorTextBox.Name = "CustomEditorTextBox";
 			this.CustomEditorTextBox.ReadOnly = true;
-			this.CustomEditorTextBox.Size = new System.Drawing.Size(519, 22);
-			this.CustomEditorTextBox.TabIndex = 4;
+			this.CustomEditorTextBox.Size = new System.Drawing.Size(517, 22);
+			this.CustomEditorTextBox.TabIndex = 6;
 			// 
 			// CustomEditorButton
 			// 
 			this.CustomEditorButton.Enabled = false;
 			this.CustomEditorButton.Location = new System.Drawing.Point(572, 324);
 			this.CustomEditorButton.Name = "CustomEditorButton";
-			this.CustomEditorButton.Size = new System.Drawing.Size(44, 25);
-			this.CustomEditorButton.TabIndex = 5;
+			this.CustomEditorButton.Size = new System.Drawing.Size(44, 27);
+			this.CustomEditorButton.TabIndex = 7;
 			this.CustomEditorButton.Text = "...";
 			this.CustomEditorButton.UseVisualStyleBackColor = true;
 			this.CustomEditorButton.Click += new System.EventHandler(this.CustomEditorButton_Click);
@@ -152,7 +152,7 @@
 			this.WorkerThreadsComboBox.Margin = new System.Windows.Forms.Padding(4);
 			this.WorkerThreadsComboBox.Name = "WorkerThreadsComboBox";
 			this.WorkerThreadsComboBox.Size = new System.Drawing.Size(48, 24);
-			this.WorkerThreadsComboBox.TabIndex = 2;
+			this.WorkerThreadsComboBox.TabIndex = 1;
 			// 
 			// label6
 			// 
@@ -170,7 +170,7 @@
 			this.OptionsOkButton.Margin = new System.Windows.Forms.Padding(4);
 			this.OptionsOkButton.Name = "OptionsOkButton";
 			this.OptionsOkButton.Size = new System.Drawing.Size(95, 31);
-			this.OptionsOkButton.TabIndex = 6;
+			this.OptionsOkButton.TabIndex = 8;
 			this.OptionsOkButton.Text = "OK";
 			this.OptionsOkButton.UseVisualStyleBackColor = true;
 			this.OptionsOkButton.Click += new System.EventHandler(this.OptionsOkButton_Click);
@@ -181,7 +181,7 @@
 			this.OptionsHelpButton.Margin = new System.Windows.Forms.Padding(4);
 			this.OptionsHelpButton.Name = "OptionsHelpButton";
 			this.OptionsHelpButton.Size = new System.Drawing.Size(95, 31);
-			this.OptionsHelpButton.TabIndex = 7;
+			this.OptionsHelpButton.TabIndex = 9;
 			this.OptionsHelpButton.Text = "Help";
 			this.OptionsHelpButton.UseVisualStyleBackColor = true;
 			this.OptionsHelpButton.Click += new System.EventHandler(this.OptionsHelpButton_Click);
@@ -192,7 +192,7 @@
 			this.OptionsCancelButton.Margin = new System.Windows.Forms.Padding(4);
 			this.OptionsCancelButton.Name = "OptionsCancelButton";
 			this.OptionsCancelButton.Size = new System.Drawing.Size(95, 31);
-			this.OptionsCancelButton.TabIndex = 8;
+			this.OptionsCancelButton.TabIndex = 10;
 			this.OptionsCancelButton.Text = "Cancel";
 			this.OptionsCancelButton.UseVisualStyleBackColor = true;
 			this.OptionsCancelButton.Click += new System.EventHandler(this.OptionsCancelButton_Click);
@@ -204,7 +204,7 @@
 			this.DeferRichTextCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.DeferRichTextCheckBox.Name = "DeferRichTextCheckBox";
 			this.DeferRichTextCheckBox.Size = new System.Drawing.Size(466, 21);
-			this.DeferRichTextCheckBox.TabIndex = 9;
+			this.DeferRichTextCheckBox.TabIndex = 3;
 			this.DeferRichTextCheckBox.Text = "Defer RichText display of search results until after search is complete";
 			this.DeferRichTextCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -214,7 +214,7 @@
 			this.label7.Location = new System.Drawing.Point(49, 130);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(140, 17);
-			this.label7.TabIndex = 10;
+			this.label7.TabIndex = 3;
 			this.label7.Text = "File Information Font:";
 			// 
 			// FileListFontTextBox
@@ -222,15 +222,16 @@
 			this.FileListFontTextBox.Location = new System.Drawing.Point(194, 127);
 			this.FileListFontTextBox.Name = "FileListFontTextBox";
 			this.FileListFontTextBox.ReadOnly = true;
-			this.FileListFontTextBox.Size = new System.Drawing.Size(377, 22);
-			this.FileListFontTextBox.TabIndex = 11;
+			this.FileListFontTextBox.Size = new System.Drawing.Size(375, 22);
+			this.FileListFontTextBox.TabIndex = 0;
+			this.FileListFontTextBox.TabStop = false;
 			// 
 			// FileListFontButton
 			// 
 			this.FileListFontButton.Location = new System.Drawing.Point(572, 126);
 			this.FileListFontButton.Name = "FileListFontButton";
-			this.FileListFontButton.Size = new System.Drawing.Size(44, 25);
-			this.FileListFontButton.TabIndex = 12;
+			this.FileListFontButton.Size = new System.Drawing.Size(44, 27);
+			this.FileListFontButton.TabIndex = 2;
 			this.FileListFontButton.Text = "...";
 			this.FileListFontButton.UseVisualStyleBackColor = true;
 			this.FileListFontButton.Click += new System.EventHandler(this.FileListFontButton_Click);
@@ -241,7 +242,7 @@
 			this.label8.Location = new System.Drawing.Point(48, 218);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(140, 17);
-			this.label8.TabIndex = 13;
+			this.label8.TabIndex = 0;
 			this.label8.Text = "Search Results Font:";
 			// 
 			// SearchResultsFontTextBox
@@ -249,15 +250,16 @@
 			this.SearchResultsFontTextBox.Location = new System.Drawing.Point(194, 215);
 			this.SearchResultsFontTextBox.Name = "SearchResultsFontTextBox";
 			this.SearchResultsFontTextBox.ReadOnly = true;
-			this.SearchResultsFontTextBox.Size = new System.Drawing.Size(377, 22);
-			this.SearchResultsFontTextBox.TabIndex = 14;
+			this.SearchResultsFontTextBox.Size = new System.Drawing.Size(375, 22);
+			this.SearchResultsFontTextBox.TabIndex = 0;
+			this.SearchResultsFontTextBox.TabStop = false;
 			// 
 			// SearchResultsFontButton
 			// 
 			this.SearchResultsFontButton.Location = new System.Drawing.Point(572, 214);
 			this.SearchResultsFontButton.Name = "SearchResultsFontButton";
-			this.SearchResultsFontButton.Size = new System.Drawing.Size(44, 25);
-			this.SearchResultsFontButton.TabIndex = 15;
+			this.SearchResultsFontButton.Size = new System.Drawing.Size(44, 27);
+			this.SearchResultsFontButton.TabIndex = 4;
 			this.SearchResultsFontButton.Text = "...";
 			this.SearchResultsFontButton.UseVisualStyleBackColor = true;
 			this.SearchResultsFontButton.Click += new System.EventHandler(this.SearchResultsFontButton_Click);

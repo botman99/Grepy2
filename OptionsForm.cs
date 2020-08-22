@@ -48,6 +48,18 @@ namespace Grepy2
 			this.DialogResult = DialogResult.Cancel;  // set the default dialog result to 'Cancel'
 
 			InitializeComponent();
+
+			int pos_x = -1;
+			int pos_y = -1;
+			if( Config.Get(Config.KEY.OptionsPosX, ref pos_x) && Config.Get(Config.KEY.OptionsPosY, ref pos_y) )
+			{
+				this.StartPosition = FormStartPosition.Manual;
+				this.Location = new Point(pos_x, pos_y);
+			}
+			else  // otherwise, center the window on the parent form
+			{
+				this.StartPosition = FormStartPosition.CenterParent;
+			}
 		}
 
 		private void OptionsForm_Load(object sender, EventArgs e)
@@ -102,17 +114,6 @@ namespace Grepy2
 
 		private void OptionsForm_Shown(object sender, EventArgs e)
 		{
-			int pos_x = -1;
-			int pos_y = -1;
-			if( Config.Get(Config.KEY.OptionsPosX, ref pos_x) && Config.Get(Config.KEY.OptionsPosY, ref pos_y) )
-			{
-				Location = new Point(pos_x, pos_y);
-			}
-			else  // otherwise, center the window on the main form
-			{
-				this.CenterToParent();
-			}
-
 			bWindowInitComplete = true;  // window initialization is complete, okay to write config settings now
 		}
 

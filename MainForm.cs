@@ -146,6 +146,28 @@ namespace Grepy2
 			bWindowInitComplete = false;  // we aren't done initializing the window yet, don't overwrite any .config settings
 
 			InitializeComponent();
+
+			// load config file settings and set window position, window size, maximized setting, splitter positions, etc.
+			int pos_x = -1;
+			int pos_y = -1;
+			if( Config.Get(Config.KEY.PosX, ref pos_x) && Config.Get(Config.KEY.PosY, ref pos_y) )
+			{
+				this.StartPosition = FormStartPosition.Manual;
+				Location = new Point(pos_x, pos_y);
+			}
+
+			int size_x = -1;
+			int size_y = -1;
+			if( Config.Get(Config.KEY.Width, ref size_x) && Config.Get(Config.KEY.Height, ref size_y) )
+			{
+				Size = new System.Drawing.Size(size_x, size_y);
+			}
+
+			bool bMaximized = false;
+			if( Config.Get(Config.KEY.Maximized, ref bMaximized) )
+			{
+				this.WindowState = bMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
+			}
 		}
 
 		protected override void WndProc(ref Message m)
@@ -1162,28 +1184,6 @@ namespace Grepy2
 			GetFilesThread = new Thread(new GetFiles(Handle).Run);
 			GetFilesThread.Priority = ThreadPriority.BelowNormal;
 			GetFilesThread.Start();  // start the thread running
-
-
-			// load config file settings and set window position, window size, maximized setting, splitter positions, etc.
-			int pos_x = -1;
-			int pos_y = -1;
-			if( Config.Get(Config.KEY.PosX, ref pos_x) && Config.Get(Config.KEY.PosY, ref pos_y) )
-			{
-				Location = new Point(pos_x, pos_y);
-			}
-
-			int size_x = -1;
-			int size_y = -1;
-			if( Config.Get(Config.KEY.Width, ref size_x) && Config.Get(Config.KEY.Height, ref size_y) )
-			{
-				Size = new System.Drawing.Size(size_x, size_y);
-			}
-
-			bool bMaximized = false;
-			if( Config.Get(Config.KEY.Maximized, ref bMaximized) )
-			{
-				this.WindowState = bMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
-			}
 
 			int splitter_type = 0;  // 0 = horizontal
 			if( Config.Get(Config.KEY.SplitterType, ref splitter_type) )

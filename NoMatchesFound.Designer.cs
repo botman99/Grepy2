@@ -64,7 +64,6 @@
 			this.Name = "NoMatchesFound";
 			this.Text = "Grepy2";
 			this.TopMost = true;
-			this.Shown += new System.EventHandler(this.NoMatchesFound_Shown);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -59,6 +59,18 @@ namespace Grepy2
 			helpForm = new SearchHelpForm();
 
 			InitializeComponent();
+
+			int pos_x = -1;
+			int pos_y = -1;
+			if( Config.Get(Config.KEY.SearchPosX, ref pos_x) && Config.Get(Config.KEY.SearchPosY, ref pos_y) )
+			{
+				this.StartPosition = FormStartPosition.Manual;
+				this.Location = new Point(pos_x, pos_y);
+			}
+			else  // otherwise, center the window on the parent form
+			{
+				this.StartPosition = FormStartPosition.CenterParent;
+			}
 		}
 
 		private void SearchForm_Load(object sender, EventArgs e)
@@ -149,17 +161,6 @@ namespace Grepy2
 
 		private void SearchForm_Shown(object sender, EventArgs e)
 		{
-			int pos_x = -1;
-			int pos_y = -1;
-			if( Config.Get(Config.KEY.SearchPosX, ref pos_x) && Config.Get(Config.KEY.SearchPosY, ref pos_y) )
-			{
-				Location = new Point(pos_x, pos_y);
-			}
-			else  // otherwise, center the window on the main form
-			{
-				this.CenterToParent();
-			}
-
 			bWindowInitComplete = true;  // window initialization is complete, okay to write config settings now
 		}
 
