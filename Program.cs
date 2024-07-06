@@ -24,13 +24,6 @@ namespace Grepy2
 		[DllImport("kernel32.dll", EntryPoint = "WriteConsoleInputW", CharSet = CharSet.Unicode, SetLastError = true)]
 		internal static extern bool WriteConsoleInput(IntPtr hConsoleInput, [MarshalAs(UnmanagedType.LPArray), In] INPUT_RECORD[] lpBuffer, int nLength, out int lpNumberOfEventsWritten);
 
-		[DllImport("Everything32.dll")]
-		public static extern UInt32 Everything_GetMajorVersion();
-		[DllImport("Everything32.dll")]
-		public static extern UInt32 Everything_GetMinorVersion();
-		[DllImport("Everything32.dll")]
-		public static extern UInt32 Everything_GetRevision();
-
 		[StructLayout(LayoutKind.Explicit,CharSet=CharSet.Unicode)]
 		public struct KEY_EVENT_RECORD
 		{
@@ -129,17 +122,6 @@ namespace Grepy2
 			if (!createdNew)
 			{
 				Globals.bIsGrepyReadOnly = true;  // ...if so, set the 'readonly' flag to indicate that this instance shouldn't write to the config file (we only want ONE writer)
-			}
-
-			Globals.EverythingMajor = Everything_GetMajorVersion();
-
-			Globals.bIsEverythingRunning = true;
-
-			if( Globals.EverythingMajor != 0 )  // is Everything search engine loaded and running?
-			{
-				Globals.bIsEverythingRunning = true;
-				Globals.EverythingMinor = Everything_GetMinorVersion();
-				Globals.EverythingRevision = Everything_GetRevision();
 			}
 
 			Globals.ApplicationPathExe = Assembly.GetExecutingAssembly().Location;

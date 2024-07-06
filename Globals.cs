@@ -85,10 +85,6 @@ namespace Grepy2
 		public static int SearchDirectoryCount;  // number of directories we searched through to collect files to search
 
 		public static bool bIsGrepyReadOnly = false;
-		public static bool bIsEverythingRunning = false;
-		public static uint EverythingMajor = 0;
-		public static uint EverythingMinor = 0;
-		public static uint EverythingRevision = 0;
 
 		public static string ApplicationPathExe;
 		public static int NumWorkerThreads;

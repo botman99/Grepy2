@@ -8,7 +8,7 @@
 ; The name of the installer
 Name "Grepy2"
 
-!define VERSION '2.2.0'
+!define VERSION '2.3.0'
 
 ; The file to write
 OutFile "Grepy2-${VERSION}.exe"
@@ -46,7 +46,6 @@ Section "Grepy2"
   
   ; Put file there
   File "bin\x86\Release\Grepy2.exe"
-  File "Everything32.dll"
   File "Grepy2Help\Grepy2Help.chm"
   
   ; Write the installation path into the registry
@@ -131,7 +130,6 @@ Section "Uninstall"
   
   ; Remove files and uninstaller
   Delete $INSTDIR\Grepy2.exe
-  Delete $INSTDIR\Everything32.dll
   Delete $INSTDIR\Grepy2Help.chm
   Delete $INSTDIR\uninstall.exe
 
