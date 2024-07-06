@@ -14,7 +14,6 @@ Features:
  - Lets you assign a custom editor application to use to open files (to override the default Windows File Association). 
  - Uses a configurable number of background threads for file searching which allows you to immediately open files as the search results are populated. 
  - Grepy is small (loads quickly) and fast (searches very quickly). 
- - If you have the [Everything](https://www.voidtools.com/) search engine installed, Grepy will automatically use it to collect the list of files to be searched. 
 
 
 Here's an example screenshot:
