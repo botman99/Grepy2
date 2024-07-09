@@ -72,7 +72,7 @@ namespace Grepy2
 				filenames = new List<string>();
 				folders = new List<string>();
 
-				InternalGetFiles(Globals.SearchDirectory);
+				filenames = GetFilesForDirectory(Globals.SearchDirectory);
 
 				if( !Globals.GetFiles.bShouldExit )
 				{
@@ -110,7 +110,7 @@ namespace Grepy2
 			}
 		}
 
-		private List<string> GetFilesForDirectory(string InDirectory, string filespec)
+		private List<string> GetFilesForDirectory(string InDirectory)
 		{
 			List<string> list = new List<string>();
 
@@ -134,14 +134,18 @@ namespace Grepy2
 
 					if (Globals.bRecursive && ((FindFileData.dwFileAttributes & FileAttributes.Directory) != 0))
 					{
-						InternalGetFiles(InDirectory + "\\" + FindFileData.cFileName);
+						list.AddRange(GetFilesForDirectory(InDirectory + "\\" + FindFileData.cFileName));
 
 						continue;
 					}
 
-					if (PathMatchSpecW(FindFileData.cFileName, filespec))
+					for( int index = 0; index < Globals.FileSpecs.Count; index++ )
 					{
-						list.Add(InDirectory + "\\" + FindFileData.cFileName);
+						if (PathMatchSpecW(FindFileData.cFileName, Globals.FileSpecs[index]))
+						{
+							list.Add(InDirectory + "\\" + FindFileData.cFileName);
+							break;
+						}
 					}
 				}
 				while (FindNextFile(hFind, out FindFileData));
@@ -152,19 +156,6 @@ namespace Grepy2
 			}
 
 			return list;
-		}
-
-		private void InternalGetFiles(string InDirectory)
-		{
-			for( int index = 0; index < Globals.FileSpecs.Count; index++ )
-			{
-				if( Globals.GetFiles.bShouldStopCurrentJob || Globals.GetFiles.bShouldExit )
-				{
-					return;
-				}
-
-				filenames.AddRange(GetFilesForDirectory(InDirectory, Globals.FileSpecs[index]));
-			}
 		}
 	}
 }
