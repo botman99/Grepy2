@@ -83,6 +83,7 @@ namespace Grepy2
 
 		public static SearchFile[] SearchFiles;
 		public static int SearchDirectoryCount;  // number of directories we searched through to collect files to search
+		public static int NumFilesSearched;
 
 		public static bool bIsGrepyReadOnly = false;
 

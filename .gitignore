@@ -50,3 +50,10 @@ Temporary Items
 .vs
 bin
 obj
+
+.p4config
+.p4ignore.txt
+
+Grepy2Help/Debug
+Grepy2Help/Release
+Grepy2Help/Grepy2Help.chm

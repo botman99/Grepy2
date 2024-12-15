@@ -46,7 +46,7 @@ namespace Grepy2
 		private static HandleRef FormHandle;
 
 		List<string> filenames;
-		List<string> folders;
+		HashSet<string> folders;
 
 		public GetFiles(IntPtr InHandle)
 		{
@@ -70,7 +70,7 @@ namespace Grepy2
 				Globals.SearchDirectoryCount = 0;
 
 				filenames = new List<string>();
-				folders = new List<string>();
+				folders = new HashSet<string>();
 
 				filenames = GetFilesForDirectory(Globals.SearchDirectory);
 

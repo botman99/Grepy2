@@ -258,6 +258,8 @@ namespace Grepy2
 
 							Globals.bShouldStopWorkerJobs = false;
 
+							Globals.NumFilesSearched = 0;
+
 							for( int i = 0; i < NumWorkersToStart; i++ )
 							{
 								Globals.Workers[i].SearchFilesIndex = NextSearchFileJobIndex;
@@ -317,16 +319,9 @@ namespace Grepy2
 
 					if( bIsSearchInProgress )
 					{
-						int num_searched = 0;
-						for( int i = 0; i < Globals.SearchFiles.Length; i++ )
-						{
-							if( (Globals.SearchFiles[i] != null) && (Globals.SearchFiles[i].Status != Globals.SearchFileStatus.NotProcessed) )
-							{
-								num_searched++;
-							}
-						}
+						Globals.NumFilesSearched++;
 
-						SearchingProgressBar.Value = (num_searched * 100) / Globals.SearchFiles.Length;
+						SearchingProgressBar.Value = (Globals.NumFilesSearched * 100) / Globals.SearchFiles.Length;
 
 						// We want to add the files to the ListView in the sorted order that they appear in the SearchFiles array.
 						// Workers will complete files at different rates, so we add files to the ListView once that file's index
@@ -371,7 +366,7 @@ namespace Grepy2
 							LowestWorkerFileProcessedIndex++;
 						}
 
-						if( num_searched == Globals.SearchFiles.Length )
+						if( Globals.NumFilesSearched == Globals.SearchFiles.Length )
 						{
 							// we are done searching through files
 							stopSearchToolStripMenuItem.Visible = false;
