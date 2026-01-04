@@ -942,6 +942,11 @@ namespace Grepy2
 			int CharIndex = RichTextBox.GetCharIndexFromPosition(MousePosition);
 			int RichTextBoxLine = RichTextBox.GetLineFromCharIndex(CharIndex);
 
+			if (RichTextBoxLine >= RichTextBox.Lines.Count())
+			{
+				RichTextBoxLine = RichTextBox.Lines.Count() - 2;  // minus 2 because the last line displayed will be blank
+			}
+
 			if( RichTextBox.Lines[RichTextBoxLine] == "" )  // empty lines can't be opened in editor because we don't know what line number it is
 			{
 				return;
