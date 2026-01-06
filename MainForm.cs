@@ -1087,15 +1087,25 @@ namespace Grepy2
 
 		private void CreateWorkerThreads()
 		{
-			// kill the worker threads...
-			if( Globals.Workers != null )
+			// request existing worker threads to exit (cooperative cancellation) before creating new ones
+			if( Globals.Workers != null && WorkerThreads != null )
 			{
-				for( int index = 0; index < Globals.Workers.Count(); index++ )
+				for( int idx = 0; idx < Globals.Workers.Length; idx++ )
 				{
-					if( WorkerThreads[index] != null )
+					try
 					{
-						WorkerThreads[index].Abort();
+						Globals.Workers[idx].bShouldExit = true;
+						if (Globals.Workers[idx].WaitHandle != null)
+						{
+							Globals.Workers[idx].WaitHandle.Set();
+						}
+
+						if (WorkerThreads[idx] != null && WorkerThreads[idx].IsAlive)
+						{
+							WorkerThreads[idx].Join(500); // wait briefly for thread to exit
+						}
 					}
+					catch { }
 				}
 			}
 
@@ -1149,23 +1159,26 @@ namespace Grepy2
 			ColumnWidthSize = new int[6];
 
 			// create a right-click menu in the FileListView to perform various functions ("copy files to clipboard", etc.)
-			MenuItem[] flv_mi = new MenuItem[] { new MenuItem("Copy Filenames To Clipboard"), new MenuItem("Export to CSV File") };
-
-			for( int i = 0; i < flv_mi.Length; i++ )
-			{
-				flv_mi[i].Click += OnFileListView_MenuItemClick;
-			}
-
-			FileListView.ContextMenu = new ContextMenu(flv_mi);
+			var flvCtx = new ContextMenuStrip();
+			var flv_mi0 = new ToolStripMenuItem("Copy Filenames To Clipboard") { Tag = 0 };
+			var flv_mi1 = new ToolStripMenuItem("Export to CSV File") { Tag = 1 };
+			flv_mi0.Click += OnFileListView_MenuItemClick;
+			flv_mi1.Click += OnFileListView_MenuItemClick;
+			flvCtx.Items.AddRange(new ToolStripItem[] { flv_mi0, flv_mi1 });
+			FileListView.ContextMenuStrip = flvCtx;
 
 			// create a right-click menu in the RichTextBox to perform various functions ("copy to clipboard", etc.)
-			MenuItem[] rtb_mi = new MenuItem[] { new MenuItem("Select Current Line"), new MenuItem("Select All"), new MenuItem("Copy Selection To Clipboard"), new MenuItem("Open in Editor") };
-			for( int i = 0; i < rtb_mi.Length; i++ )
-			{
-				rtb_mi[i].Click += OnRichTextBox_MenuItemClick;
-			}
-
-			RichTextBox.ContextMenu = new ContextMenu(rtb_mi);
+			var rtbCtx = new ContextMenuStrip();
+			var rtb_mi0 = new ToolStripMenuItem("Select Current Line") { Tag = 0 };
+			var rtb_mi1 = new ToolStripMenuItem("Select All") { Tag = 1 };
+			var rtb_mi2 = new ToolStripMenuItem("Copy Selection To Clipboard") { Tag = 2 };
+			var rtb_mi3 = new ToolStripMenuItem("Open in Editor") { Tag = 3 };
+			rtb_mi0.Click += OnRichTextBox_MenuItemClick;
+			rtb_mi1.Click += OnRichTextBox_MenuItemClick;
+			rtb_mi2.Click += OnRichTextBox_MenuItemClick;
+			rtb_mi3.Click += OnRichTextBox_MenuItemClick;
+			rtbCtx.Items.AddRange(new ToolStripItem[] { rtb_mi0, rtb_mi1, rtb_mi2, rtb_mi3 });
+			RichTextBox.ContextMenuStrip = rtbCtx;
 
 
 			int NumberOfProcessors = Math.Max(Environment.ProcessorCount - 1, 1);  // subtract one from total numberr of logical processors (so we don't max out the CPU)
@@ -1292,22 +1305,42 @@ namespace Grepy2
 
 			Config.Save();
 
-			// kill the worker threads and the GetFiles thread...
+			// request worker threads to exit cooperatively
 			if( Globals.Workers != null )
 			{
-				for( int index = 0; index < Globals.Workers.Count(); index++ )
+				for( int index = 0; index < Globals.Workers.Length; index++ )
 				{
-					if( WorkerThreads[index] != null )
+					try
 					{
-						WorkerThreads[index].Abort();
+						Globals.Workers[index].bShouldExit = true;
+						if (Globals.Workers[index].WaitHandle != null)
+						{
+							Globals.Workers[index].WaitHandle.Set();
+						}
+
+						if( WorkerThreads != null && WorkerThreads[index] != null && WorkerThreads[index].IsAlive )
+						{
+							WorkerThreads[index].Join(500);
+						}
 					}
+					catch { }
 				}
 			}
 
-			if( GetFilesThread != null )
+			// request GetFiles thread to exit cooperatively
+			try
 			{
-				GetFilesThread.Abort();
+				Globals.GetFiles.bShouldExit = true;
+				if (Globals.GetFiles.WaitHandle != null)
+				{
+					Globals.GetFiles.WaitHandle.Set();
+				}
+				if( GetFilesThread != null && GetFilesThread.IsAlive )
+				{
+					GetFilesThread.Join(500);
+				}
 			}
+			catch { }
 		}
 
 		private void SetRichTextTabPositions()
@@ -1793,7 +1826,11 @@ namespace Grepy2
 
 		private void OnFileListView_MenuItemClick(object sender, EventArgs e)
 		{
-			int index = ((MenuItem)sender).Index;
+			int index = 0;
+			if (sender is ToolStripMenuItem tsi && tsi.Tag is int t)
+			{
+				index = t;
+			}
 
 			if( index == 0 )  // copy filenames to clipboard
 			{
@@ -1847,7 +1884,11 @@ namespace Grepy2
 
 		private void OnRichTextBox_MenuItemClick(object sender, EventArgs e)
 		{
-			int index = ((MenuItem)sender).Index;
+			int index = 0;
+			if (sender is ToolStripMenuItem tsi && tsi.Tag is int t)
+			{
+				index = t;
+			}
 
 			if( (index == 0) || (index == 1) )
 			{

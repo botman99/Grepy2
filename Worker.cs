@@ -73,30 +73,33 @@ namespace Grepy2
 
 				SearchFilesIndex = Globals.Workers[MyIndex].SearchFilesIndex;
 
-				if( !File.Exists(Globals.SearchFiles[SearchFilesIndex].Filename) )  // verify that the file exists
+				if (Globals.SearchFiles != null)
 				{
-					Globals.SearchFiles[SearchFilesIndex].Status = Globals.SearchFileStatus.SearchTextNotFound;
-				}
-				else
-				{
-					if( IsFileBinary(Globals.SearchFiles[SearchFilesIndex].Filename) )  // check if the file is binary
+					if( !File.Exists(Globals.SearchFiles[SearchFilesIndex].Filename) )  // verify that the file exists
 					{
-						Globals.SearchFiles[SearchFilesIndex].Status = Globals.SearchFileStatus.FileIsBinary;
+						Globals.SearchFiles[SearchFilesIndex].Status = Globals.SearchFileStatus.SearchTextNotFound;
 					}
 					else
 					{
-						if( !ScanFileForMatches(Globals.SearchFiles[SearchFilesIndex].Filename) )
+						if( IsFileBinary(Globals.SearchFiles[SearchFilesIndex].Filename) )  // check if the file is binary
 						{
-							Globals.SearchFiles[SearchFilesIndex].Status = Globals.SearchFileStatus.SearchTextNotFound;
+							Globals.SearchFiles[SearchFilesIndex].Status = Globals.SearchFileStatus.FileIsBinary;
 						}
 						else
 						{
-							Globals.SearchFiles[SearchFilesIndex].Status = Globals.SearchFileStatus.SearchTextFound;
+							if( !ScanFileForMatches(Globals.SearchFiles[SearchFilesIndex].Filename) )
+							{
+								Globals.SearchFiles[SearchFilesIndex].Status = Globals.SearchFileStatus.SearchTextNotFound;
+							}
+							else
+							{
+								Globals.SearchFiles[SearchFilesIndex].Status = Globals.SearchFileStatus.SearchTextFound;
+							}
 						}
 					}
 				}
 
-				if( !Globals.Workers[MyIndex].bShouldExit )
+				if ( !Globals.Workers[MyIndex].bShouldExit )
 				{
 					Globals.Workers[MyIndex].bIsWorking = false;
 
