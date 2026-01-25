@@ -300,7 +300,7 @@ namespace Grepy2
 
 		private void FoldersButton_Click(object sender, EventArgs e)
 		{
-			FolderSelectDialog FolderSelect = new FolderSelectDialog();
+			FolderBrowserDialog FolderSelect = new FolderBrowserDialog();
 
 			if( (FolderName != "") && Directory.Exists(FolderName) )
 			{
@@ -311,9 +311,9 @@ namespace Grepy2
 				FolderSelect.InitialDirectory = "";
 			}
 
-			if( FolderSelect.ShowDialog() && (FolderSelect.FileName != "") )
+			if( (FolderSelect.ShowDialog() == DialogResult.OK) && (FolderSelect.SelectedPath != "") )
 			{
-				FolderComboBox.Text = FolderSelect.FileName;
+				FolderComboBox.Text = FolderSelect.SelectedPath;
 			}
 		}
 
